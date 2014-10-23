@@ -20,7 +20,7 @@ module.exports = {
 				if(match){
 					console.log('match');
 					req.session.userid = user.id;
-					return res.json({message:'LOGIN OK'});
+					return res.view('user_home',{username:user.name});
 				}
 				else {
 					return res.json({message: 'passwords do not match'});
