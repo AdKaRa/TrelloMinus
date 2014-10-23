@@ -11,8 +11,8 @@ module.exports = {
 		var bcrypt = require('bcrypt');
 		var req_username = req.param('name');
 		var req_password = req.param('password');
-console.log(req_username,req_password);
-User.findOneByName(req_username,function(err,user){
+		console.log(req_username,req_password);
+		User.findOneByName(req_username,function(err,user){
 			if(err) return res.json({message:'Error with username (name)'});
 			console.log(user);
 			bcrypt.compare(req_password,user.password,function(err,match){
