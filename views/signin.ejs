@@ -1,5 +1,30 @@
-<form action="/user/login" method=POST>
-	Login:<input type=text name=name /><br />
-	Password:<input type=password name=password /><br />
-	<input type=submit value="Sign in" />
+<div id="message"></div>
+<form action="#" method=POST>
+	Login:<input id="name" type=text name=name /><br />
+	Password:<input id="password" type=password name=password /><br />
+	<input id="signin" type="submit" value="Sign in" />
 </form>
+
+<script type="text/javascript">
+
+    document.querySelector('form').onsubmit = function() {
+        var divMessage = document.querySelector("#message");
+        var username = document.querySelector("#name").value;
+        var password = document.querySelector("#password").value;
+        io.socket.post(
+                '/user/login',
+                {name:username, password:password},
+                function(res,jsres) {
+                    console.log(res,jsres);
+                    if(jsres.statusCode === 200) {
+                        if(res.redirect)
+                            window.location = res.redirect;
+                    }
+                    else {
+                        divMessage.innerHTML = res.message;
+                    }
+                }
+        );
+        return false;
+    };
+</script>

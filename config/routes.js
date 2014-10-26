@@ -37,7 +37,9 @@ module.exports.routes = {
   },
   '/signin': {
   	view: 'signin'
-  }
+  },
+  '/profile': 'UserController.profile',
+  '/profile/:name': 'UserController.profile'
 
   /***************************************************************************
   *                                                                          *
