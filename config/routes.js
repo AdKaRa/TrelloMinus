@@ -39,7 +39,10 @@ module.exports.routes = {
   	view: 'signin'
   },
   '/profile': 'UserController.profile',
-  '/profile/:name': 'UserController.profile'
+  '/profile/:name': 'UserController.profile',
+  '/signup' : {
+    view: 'signup'
+  }
 
   /***************************************************************************
   *                                                                          *

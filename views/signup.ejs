@@ -1,0 +1,50 @@
+<div id="message">
+  <% if(typeof error !== 'undefined') error %>
+</div>
+<!-- TODO: html5 pattern validation -->
+<form id="signup-form" action="#" method=POST>
+  <label for="name">Login:</label><input id="name" type=text name=name /><div id="nameMessage"></div><br />
+  <label for="email">Email:</label><input id="email" type="text" name="email" /><div id="emailMessage"></div><br />
+  <label for="password">Password:</label><input id="password" type=password name=password /><br />
+  <input id="signup" type="submit" value="Sign up" />
+</form>
+
+<script type="text/javascript">
+  var divMessage = document.querySelector("#message");
+  var username = document.querySelector("#name");
+  var password = document.querySelector("#password");
+  var email = document.querySelector("#email");
+  var form = document.querySelector("#signup-form");
+
+  username.onchange = validate;
+  email.onchange = validate;
+  form.onsubmit = function(){
+    io.socket.post(
+      '/user/register',
+      {name:username.value, password:password.value, email: email.value},
+      function(res,jsres) {
+        if(jsres.statusCode === 200) {
+          if(res.redirect) {
+            alert(res.message);
+            window.location = res.redirect;
+          }
+        }
+        else {
+          divMessage.innerHTML = res.message;
+        }
+      }
+    );
+    return false;
+  };
+
+  function validate(){
+    var inputName = this.name;
+    var inputValue = this.value;
+    io.socket.post('/user/validate', {name: inputName, value: inputValue}, function (res, jsres) {
+      if(jsres.statusCode === 200) {
+        var inputMessageDiv = document.querySelector('#'+inputName+'Message');
+        inputMessageDiv.innerHTML = res.message;
+      }
+    });
+  }
+</script>
