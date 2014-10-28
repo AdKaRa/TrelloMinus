@@ -13,6 +13,6 @@ module.exports = {
     },
 
     getUserProfilePath : function(req) {
-        return '/profile/'+req.session.user.name;
+        return '/user/'+req.session.user.name;
     }
 };
