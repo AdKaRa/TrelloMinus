@@ -1,11 +1,9 @@
-<div id="message">
-  <% if(typeof error !== 'undefined') error %>
-</div>
-<!-- TODO: html5 pattern validation -->
+<div id="message"></div>
+
 <form id="signup-form" action="#" method=POST>
-  <label for="name">Login:</label><input id="name" type=text name=name /><div id="nameMessage"></div><br />
-  <label for="email">Email:</label><input id="email" type="text" name="email" /><div id="emailMessage"></div><br />
-  <label for="password">Password:</label><input id="password" type=password name=password /><br />
+  <label for="name">Login:</label><input id="name" type=text name=name required pattern=".{4,}" title="Username needs to be at least 4 characters long"/><div id="nameMessage"></div><br />
+  <label for="email">Email:</label><input id="email" type="email" required name="email" /><div id="emailMessage"></div><br />
+  <label for="password">Password:</label><input id="password" required type="password" name=password pattern=".{6,}" title="Password needs to be at least 6 characters long"/><br />
   <input id="signup" type="submit" value="Sign up" />
 </form>
 
@@ -37,14 +35,19 @@
     return false;
   };
 
-  function validate(){
+  function validate() {
     var inputName = this.name;
     var inputValue = this.value;
-    io.socket.post('/user/validate', {name: inputName, value: inputValue}, function (res, jsres) {
-      if(jsres.statusCode === 200) {
-        var inputMessageDiv = document.querySelector('#'+inputName+'Message');
-        inputMessageDiv.innerHTML = res.message;
-      }
-    });
+    var inputMessageDiv = document.querySelector('#' + inputName + 'Message');
+    if (this.validity.valid) {
+      io.socket.post('/user/validate', {name: inputName, value: inputValue}, function (res, jsres) {
+        if (jsres.statusCode === 200) {
+          inputMessageDiv.innerHTML = res.message;
+        }
+      });
+    }
+    else {
+      inputMessageDiv.innerHTML = this.validationMessage;
+    }
   }
 </script>
