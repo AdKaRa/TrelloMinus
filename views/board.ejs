@@ -1,0 +1,56 @@
+Board <%= board.title %>
+
+<ul>Your lists:
+  <% for(var i= 0, l= lists.length; i < l; i++) {%>
+    <li>
+      <div><%= lists[i].name %></div>
+    </li>
+  <%}%>
+</ul>
+
+<button id="addListButton">Add a new list</button><br/><br/>
+
+<div id="addListFormWrapper" hidden>
+  Add new list:<br/>
+  <form id="addListForm" method=POST action="#">
+    <label for="name">New list name:</label><input id="name" type="text" name="name" />
+    <input type="hidden" name="board" value="<%= board.hash %>" />
+    <input type="submit" value="Add" />
+  </form>
+</div>
+
+<form method=GET action="/user/">
+  <input type=submit value="Back" />
+</form>
+
+<script type="text/javascript">
+  function toggleAddListFormVisibility(elem){
+    elem.parentNode.hidden = !elem.parentNode.hidden;
+  }
+
+  function addListSubmit() {
+    io.socket.post(
+      '/list/add',
+      {name:this.name.value, board: this.board.value},
+      function(res,jres){
+        if(res.message) {
+          alert(res.message);
+        }
+        if(jres.statusCode === 200) {
+          window.location = window.location;
+        }
+      });
+    return false;
+  }
+
+  var formElement = document.querySelector("#addListForm");
+  formElement.onsubmit = addListSubmit;
+  document.querySelector("#addListButton").onclick = function() {
+    if (formElement.parentNode.hidden) {
+      this.innerHTML = "Hide form";
+    }
+    else
+      this.innerHTML = "Add a new list";
+    toggleAddListFormVisibility(formElement);
+  };
+</script>

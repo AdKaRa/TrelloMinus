@@ -1,4 +1,53 @@
 Hello <%= user.name %><br/>
+
+<ul>Your boards:
+  <% for(var i= 0, l= boards.length; i < l; i++) {%>
+    <li><a href="<%= boards[i].url %>"><%= boards[i].title %></a></li>
+  <%}%>
+</ul>
+
+<button id="addBoardButton">Add a new board</button><br/><br/>
+
+<div id="addBoardFormWrapper" hidden>
+  Add new board:<br/>
+  <form id="addBoardForm" method=POST action="#">
+    <label for="title">New board title:</label><input id="title" type="text" name="title" />
+    <input type="submit" value="Add" />
+  </form>
+</div>
+
 <form method=POST action="/user/logout">
 	<input type=submit value="Sign out" />
 </form>
+
+<script type="text/javascript">
+  function toggleAddBoardFormVisibility(elem){
+    elem.parentNode.hidden = !elem.parentNode.hidden;
+  }
+
+  function addBoardSubmit() {
+    io.socket.post(
+      '/board/add',
+      {title:this.title.value},
+      function(res,jres){
+        if(res.message) {
+          alert(res.message);
+        }
+        if(jres.statusCode === 200) {
+          window.location = window.location;
+        }
+      });
+    return false;
+  }
+
+  var formElement = document.querySelector("#addBoardForm");
+  formElement.onsubmit = addBoardSubmit;
+  document.querySelector("#addBoardButton").onclick = function() {
+    if (formElement.parentNode.hidden) {
+      this.innerHTML = "Hide form";
+    }
+    else
+      this.innerHTML = "Add a new board";
+    toggleAddBoardFormVisibility(formElement);
+  };
+</script>

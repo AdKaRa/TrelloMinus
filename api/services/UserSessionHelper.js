@@ -6,9 +6,8 @@
  */
 
 module.exports = {
-
+    //TODO: make appropriate policy for that
     isUserAuthenticated : function(req) {
-        console.log(req.session.authenticated);
         return !!(req.session.user);
     },
 

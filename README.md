@@ -3,6 +3,14 @@
 a [Sails](http://sailsjs.org) application
 
 ##Dependencies:
-* bcrypt (additionally python2.7)
+* bcrypt
+* hashids
 
-`npm install bcrypt`
+
+##Notes:
+
+After git clone, enter project directory and install appropriate modules by typing:
+`npm install`
+
+If you add/want to add a module to the project type
+`npm install <module_name> --save`

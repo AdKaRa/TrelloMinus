@@ -6,6 +6,7 @@
  */
 
 var UserSessionHelper = require('../services/UserSessionHelper');
+var UserBoardsHelper = require('../services/UserBoardsHelper');
 module.exports = {
 
   login: function (req, res) {
@@ -62,14 +63,15 @@ module.exports = {
     if (UserSessionHelper.isUserAuthenticated(req)) {
       // logged
       if (req.session.user.name === req_username) {
-        return res.view('user_home', {user: req.session.user});
+        return UserBoardsHelper.returnViewWithUserBoards('user_home',res,req.session.user);
+        //return res.view('user_home', {user: req.session.user, boards:boards});
       }
       else {
         // stranger
       }
     }
-    // guest
-    return res.send('Not yet implemented');
+    // guest: login or let them see profile
+    return res.redirect('/signin');
   },
   validate : function(req,res) {
     var req_name = req.param('name');

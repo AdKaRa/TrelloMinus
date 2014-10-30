@@ -42,7 +42,9 @@ module.exports.routes = {
   'get /user/:name': 'UserController.profile',
   '/signup' : {
     view: 'signup'
-  }
+  },
+  'get /b/:hash':'BoardController.main',
+  'get /b/:hash/:title': 'BoardController.main'
 
   /***************************************************************************
   *                                                                          *

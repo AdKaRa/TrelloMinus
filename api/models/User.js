@@ -23,6 +23,10 @@ module.exports = {
       type: 'string',
       minLength: 6,
       required: true
+    },
+    boards: {
+      collection: "board",
+      via: "owner"
     }
   },
 
