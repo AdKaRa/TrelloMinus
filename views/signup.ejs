@@ -1,11 +1,37 @@
 <div id="message"></div>
 
-<form id="signup-form" action="#" method=POST>
-  <label for="name">Login:</label><input id="name" type=text name=name required pattern=".{4,}" title="Username needs to be at least 4 characters long"/><div id="nameMessage"></div><br />
-  <label for="email">Email:</label><input id="email" type="email" required name="email" /><div id="emailMessage"></div><br />
-  <label for="password">Password:</label><input id="password" required type="password" name=password pattern=".{6,}" title="Password needs to be at least 6 characters long"/><br />
-  <input id="signup" type="submit" value="Sign up" />
-</form>
+
+<div class="col-lg-4"></div>
+<div class="col-lg-4">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">Sign up:</h3>
+      </div>
+      <div class="panel-body">
+            <form id="signup-form" action="#" method=POST>              
+                <div style="margin-bottom: 10px">
+                    <label for="name" style="width: 100px; float: left">Login:</label>
+                    <input id="name" type=text name=name required pattern=".{4,}" title="Username needs to be at least 4 characters long"/>
+                    <div id="nameMessage"></div>
+                </div>
+
+                <div style="margin-bottom: 10px">
+                    <label for="email" style="width: 100px; float: left">Email:</label>
+                    <input id="email" type="email" required name="email" />
+                    <div id="emailMessage"></div>
+                </div>
+                
+                <div style="margin-bottom: 10px">
+                    <label for="password" style="width: 100px; float: left">Password:</label>
+                    <input id="password" required type="password" name=password pattern=".{6,}" title="Password needs to be at least 6 characters long"/>               
+                </div>
+                
+                <input id="signup" type="submit" value="Sign up" class="btn btn-primary" style="margin-left: 200px"/>
+           </form>
+      </div>
+    </div>
+</div>
+
 
 <script type="text/javascript">
   var divMessage = document.querySelector("#message");
