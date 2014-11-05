@@ -24,7 +24,10 @@ module.exports = {
       minLength: 6,
       required: true
     },
- 
+    boards: {
+      collection: "board",
+      via: "owner"
+    }
   },
 
   beforeCreate: function (attr, cb) {
