@@ -16,18 +16,21 @@
           <div class="navbar-header">
             <a class="navbar-brand" href="/"> Trello Minus </a>
           </div>
+          <% if(typeof user !== 'undefined') { %>
+              <a href="/user/logout" class="btn btn-danger pull-right" style="margin-top: 6px"> Sign out </a>
+          <% } else {%>
+              <a href="/signin" class="btn btn-danger pull-right" style="margin-top: 6px"> Sign in </a>
+          <% } %>
 
-          <a href="/signin" class="btn btn-danger pull-right" style="margin-top: 6px"> Sign in </a>
-          
         </div>
     </nav>
     <div class="col-lg-1"></div>
     <div id="body" class="col-lg-10">
         <%- body %>
-    </div>    
+    </div>
 
     <script src="/js/dependencies/sails.io.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    
+
   </body>
 </html>
