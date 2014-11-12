@@ -1,4 +1,4 @@
-Board <%= board.title %>
+Board <%= board.title %> ( <%= board.type %> )
 
 <ul>Your lists:
   <% for(var i= 0, l= lists.length; i < l; i++) {%>
@@ -19,9 +19,7 @@ Board <%= board.title %>
   </form>
 </div>
 
-<form method=GET action="/user/">
-  <input type=submit value="Back" />
-</form>
+<a href="/user/">Back</a>
 
 <script type="text/javascript">
   function toggleAddListFormVisibility(elem){

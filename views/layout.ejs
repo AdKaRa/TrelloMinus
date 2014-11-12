@@ -16,8 +16,8 @@
           <div class="navbar-header">
             <a class="navbar-brand" href="/"> Trello Minus </a>
           </div>
-          <% if(typeof user !== 'undefined') { %>
-              <a href="/user/logout" class="btn btn-danger pull-right" style="margin-top: 6px"> Sign out </a>
+          <% if(typeof req.session.user !== 'undefined') { %>
+              <a href="/signout" class="btn btn-danger pull-right" style="margin-top: 6px"> Sign out </a>
           <% } else {%>
               <a href="/signin" class="btn btn-danger pull-right" style="margin-top: 6px"> Sign in </a>
           <% } %>

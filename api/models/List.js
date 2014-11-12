@@ -13,6 +13,10 @@ module.exports = {
     },
     board: {
       model: "board"
+    },
+    cards: {
+      collection: 'card',
+      via: 'list'
     }
   }
 };

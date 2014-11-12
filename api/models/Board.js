@@ -19,6 +19,11 @@ module.exports = {
     lists: {
       collection: "list",
       via: "board"
+    },
+    type: {
+      type: "string",
+      enum: ["public", "shared", "private"],
+      defaultsTo: "private"
     }
   }
 };

@@ -2,33 +2,55 @@ Hello <%= user.name %><br/>
 
 <ul>Your boards:
   <% for(var i= 0, l= boards.length; i < l; i++) {%>
-    <li><a href="<%= boards[i].url %>"><%= boards[i].title %></a></li>
+    <li>
+      <a href="<%= boards[i].url %>">
+        <div><%= boards[i].title %></div>
+      </a>
+    </li>
   <%}%>
+    <li>
+      <div id="add-new-board">
+        <span>Add new board</span>
+        <span hidden>
+          <form id="addBoardForm" method=POST action="#">
+            <label for="title">New board title:</label><input id="title" type="text" name="title" />
+            <label for="type">Type:</label>
+            <!-- TODO: make it not hardcoded -->
+            <select id="type" name="type">
+              <option value="private" selected>Private</option>
+              <option value="public">Public</option>
+            </select>
+            <input type="submit" value="Add" />
+          </form>
+          <button id="hide-add-button-form">X</button>
+        </span>
+      </div>
+    </li>
 </ul>
 
-<button id="addBoardButton">Add a new board</button><br/><br/>
-
-<div id="addBoardFormWrapper" hidden>
-  Add new board:<br/>
-  <form id="addBoardForm" method=POST action="#">
-    <label for="title">New board title:</label><input id="title" type="text" name="title" />
-    <input type="submit" value="Add" />
-  </form>
-</div>
-
-<form method=POST action="/user/logout">
-	<input type=submit value="Sign out" />
-</form>
-
 <script type="text/javascript">
-  function toggleAddBoardFormVisibility(elem){
-    elem.parentNode.hidden = !elem.parentNode.hidden;
+  var formElement = document.querySelector("#addBoardForm");
+  var addBoardDivElement = document.querySelector("#add-new-board");
+  var hideFormElement = document.querySelector("#hide-add-button-form");
+
+  function showAddBoardForm(e){
+    addBoardDivElement.children[0].hidden = true;
+    addBoardDivElement.children[1].hidden = false;
+    addBoardDivElement.onclick = null;
+    e.stopPropagation();
+  }
+  function hideAddBoardForm(e) {
+    addBoardDivElement.children[0].hidden = false;
+    addBoardDivElement.children[1].hidden = true;
+    addBoardDivElement.onclick = showAddBoardForm;
+    e.stopPropagation();
   }
 
   function addBoardSubmit() {
     io.socket.post(
       '/board/add',
-      {title:this.title.value},
+      {title:this.title.value,
+      type: this.type.value},
       function(res,jres){
         if(res.message) {
           alert(res.message);
@@ -40,14 +62,8 @@ Hello <%= user.name %><br/>
     return false;
   }
 
-  var formElement = document.querySelector("#addBoardForm");
+
   formElement.onsubmit = addBoardSubmit;
-  document.querySelector("#addBoardButton").onclick = function() {
-    if (formElement.parentNode.hidden) {
-      this.innerHTML = "Hide form";
-    }
-    else
-      this.innerHTML = "Add a new board";
-    toggleAddBoardFormVisibility(formElement);
-  };
+  addBoardDivElement.onclick = showAddBoardForm;
+  hideFormElement.onclick = hideAddBoardForm;
 </script>

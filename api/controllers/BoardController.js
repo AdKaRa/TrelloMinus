@@ -31,8 +31,9 @@ module.exports = {
   add: function (req, res) {
     var user = req.session.user;
     var boardTitle = req.param("title");
+    var boardType = req.param("type");
     if(user) {
-      Board.create({title: boardTitle, owner: user.id}).exec(function(err,board){
+      Board.create({title: boardTitle, owner: user.id, type: boardType}).exec(function(err,board){
         if(board){
           return res.json({message:"Board "+boardTitle+" has been created"});
         }

@@ -44,11 +44,12 @@ module.exports = {
     });
   },
   logout: function (req, res) {
+    var redirectURL = "/";
     if (!req.session.user) {
-      return res.json({message: 'Not signed in'});
+      redirectURL += '?message="Not signed in"';
     }
     delete req.session.user;
-    return res.json({message: 'Logged out'});
+    return res.redirect(redirectURL);
   },
   profile: function (req, res) {
     var req_username = req.param('name');

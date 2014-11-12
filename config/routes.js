@@ -38,6 +38,7 @@ module.exports.routes = {
   '/signin': {
   	view: 'signin'
   },
+  '/signout':'UserController.logout',
   'get /user': 'UserController.profile',
   'get /user/:name': 'UserController.profile',
   '/signup' : {
