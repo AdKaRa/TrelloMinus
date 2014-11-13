@@ -1,4 +1,4 @@
-Board <%= board.title %> ( <%= board.type %> )
+Board <%= board.title %> ( <%=: board.type | capitalize %> )
 
 <ul>Your lists:
   <% for(var i= 0, l= lists.length; i < l; i++) {%>
@@ -6,24 +6,33 @@ Board <%= board.title %> ( <%= board.type %> )
       <div><%= lists[i].name %></div>
     </li>
   <%}%>
+  <li>
+    <div id="add-new-list">
+      <span>Add new list</span>
+      <span id="addListFormWrapper" hidden>
+        <form id="addListForm" method=POST action="#">
+          <label for="name">New list name:</label><input id="name" type="text" name="name" />
+          <input type="hidden" name="board" value="<%= board.hash %>" />
+          <input type="submit" value="Add" />
+        </form>
+        <button id="hide-add-button-form">X</button>
+      </span>
+    </div>
+  </li>
 </ul>
-
-<button id="addListButton">Add a new list</button><br/><br/>
-
-<div id="addListFormWrapper" hidden>
-  Add new list:<br/>
-  <form id="addListForm" method=POST action="#">
-    <label for="name">New list name:</label><input id="name" type="text" name="name" />
-    <input type="hidden" name="board" value="<%= board.hash %>" />
-    <input type="submit" value="Add" />
-  </form>
-</div>
 
 <a href="/user/">Back</a>
 
 <script type="text/javascript">
-  function toggleAddListFormVisibility(elem){
-    elem.parentNode.hidden = !elem.parentNode.hidden;
+  var formElement = document.querySelector("#addListForm");
+  var addListDivElement = document.querySelector("#add-new-list");
+  var hideFormElement = document.querySelector("#hide-add-button-form");
+
+  function toggleVisibilityAddListForm(e){
+    addListDivElement.children[0].hidden = !addListDivElement.children[0].hidden;
+    addListDivElement.children[1].hidden = !addListDivElement.children[1].hidden;
+    addListDivElement.onclick = addListDivElement.onclick === null ? toggleVisibilityAddListForm : null;
+    e.stopPropagation();
   }
 
   function addListSubmit() {
@@ -41,14 +50,8 @@ Board <%= board.title %> ( <%= board.type %> )
     return false;
   }
 
-  var formElement = document.querySelector("#addListForm");
   formElement.onsubmit = addListSubmit;
-  document.querySelector("#addListButton").onclick = function() {
-    if (formElement.parentNode.hidden) {
-      this.innerHTML = "Hide form";
-    }
-    else
-      this.innerHTML = "Add a new list";
-    toggleAddListFormVisibility(formElement);
-  };
+  addListDivElement.onclick = toggleVisibilityAddListForm;
+  hideFormElement.onclick = toggleVisibilityAddListForm;
+
 </script>

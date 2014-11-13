@@ -14,10 +14,11 @@ var hashId = new Hashids(HASHID_SALT);
 
 module.exports = {
 
-  PRIVATE_BOARD: "private",
-  PUBLIC_BOARD: "public",
-  SHARED_BOARD: "shared",
-
+  TYPES: {
+    PRIVATE_BOARD: "private",
+    PUBLIC_BOARD: "public",
+    SHARED_BOARD: "shared"
+  },
   encodeBoardHash : function(id){
     return hashId.encode(id);
   },

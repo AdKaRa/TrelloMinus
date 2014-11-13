@@ -4,7 +4,7 @@
  * @description :: Server-side logic for managing lists
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
-var BoardHelper = require("../services/BoardHelper");
+
 module.exports = {
   add: function (req, res) {
     var user = req.session.user;

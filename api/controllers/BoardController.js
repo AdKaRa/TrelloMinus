@@ -5,9 +5,6 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
-var BoardHelper = require("../services/BoardHelper");
-var BoardListsHelper = require("../services/BoardListsHelper");
-
 module.exports = {
   main: function (req, res) {
     var boardHash = req.param('hash');

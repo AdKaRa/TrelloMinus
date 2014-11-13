@@ -15,10 +15,10 @@ Hello <%= user.name %><br/>
           <form id="addBoardForm" method=POST action="#">
             <label for="title">New board title:</label><input id="title" type="text" name="title" />
             <label for="type">Type:</label>
-            <!-- TODO: make it not hardcoded -->
             <select id="type" name="type">
-              <option value="private" selected>Private</option>
-              <option value="public">Public</option>
+              <% _.each(BoardHelper.TYPES,function(type) { %>
+                <option value="<%= type %>"><%=: type | capitalize %></option>
+              <% }); %>
             </select>
             <input type="submit" value="Add" />
           </form>
@@ -33,16 +33,10 @@ Hello <%= user.name %><br/>
   var addBoardDivElement = document.querySelector("#add-new-board");
   var hideFormElement = document.querySelector("#hide-add-button-form");
 
-  function showAddBoardForm(e){
-    addBoardDivElement.children[0].hidden = true;
-    addBoardDivElement.children[1].hidden = false;
-    addBoardDivElement.onclick = null;
-    e.stopPropagation();
-  }
-  function hideAddBoardForm(e) {
-    addBoardDivElement.children[0].hidden = false;
-    addBoardDivElement.children[1].hidden = true;
-    addBoardDivElement.onclick = showAddBoardForm;
+  function toggleVisibilityAddBoardForm(e){
+    addBoardDivElement.children[0].hidden = !addBoardDivElement.children[0].hidden;
+    addBoardDivElement.children[1].hidden = !addBoardDivElement.children[1].hidden;
+    addBoardDivElement.onclick = addBoardDivElement.onclick === null ? toggleVisibilityAddBoardForm : null;
     e.stopPropagation();
   }
 
@@ -64,6 +58,6 @@ Hello <%= user.name %><br/>
 
 
   formElement.onsubmit = addBoardSubmit;
-  addBoardDivElement.onclick = showAddBoardForm;
-  hideFormElement.onclick = hideAddBoardForm;
+  addBoardDivElement.onclick = toggleVisibilityAddBoardForm;
+  hideFormElement.onclick = toggleVisibilityAddBoardForm;
 </script>

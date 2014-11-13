@@ -5,8 +5,6 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
-var UserSessionHelper = require('../services/UserSessionHelper');
-var UserBoardsHelper = require('../services/UserBoardsHelper');
 module.exports = {
 
   login: function (req, res) {
