@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/styles/importer.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/styles/styles.css">
+  
   </head>
 
   <body>
@@ -18,8 +19,9 @@
           </div>
           <% if(typeof req.session.user !== 'undefined') { %>
               <a href="/signout" class="btn btn-danger pull-right" style="margin-top: 6px"> Sign out </a>
+              <a href="/user/<%= req.session.user.name %>" class="btn btn-link pull-right" style="margin-top: 6px; margin-right: 6px;" ><%= req.session.user.name %></a>
           <% } else {%>
-              <a href="/signin" class="btn btn-danger pull-right" style="margin-top: 6px"> Sign in </a>
+              <a href="/signin" class="btn btn-success pull-right" style="margin-top: 6px"> Sign in </a>
           <% } %>
 
         </div>
@@ -28,6 +30,7 @@
     <div id="body" class="col-lg-10">
         <%- body %>
     </div>
+
 
     <script src="/js/dependencies/sails.io.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>

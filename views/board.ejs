@@ -4,6 +4,14 @@ Board <%= board.title %> ( <%=: board.type | capitalize %> )
   <% for(var i= 0, l= lists.length; i < l; i++) {%>
     <li>
       <div><%= lists[i].name %></div>
+      <div>
+        <ul id="list-<%= lists[i].id %>">
+          <% _.each(lists[i].cards,function(card) { %>
+            <li><span><%= card.title %></span></li>
+          <% }); %>
+        </ul>
+        <span class="add-card">Add Card</span>
+      </div>
     </li>
   <%}%>
   <li>
@@ -27,6 +35,51 @@ Board <%= board.title %> ( <%=: board.type | capitalize %> )
   var formElement = document.querySelector("#addListForm");
   var addListDivElement = document.querySelector("#add-new-list");
   var hideFormElement = document.querySelector("#hide-add-button-form");
+  var addCardButton = document.querySelectorAll(".add-card");
+
+  for(var i = 0, l = addCardButton.length; i < l; i++) addCardButton[i].onclick = addCard;
+  function addCard(e){
+    var list = e.target.previousElementSibling;
+    var listId = list.id.split("-")[1];
+    list.appendChild(cardFormTemplate(listId));
+    list.querySelector("li:last-of-type input[type=text]").focus();
+  }
+
+  function cardFormTemplate(listId){
+    var card = document.createElement("li");
+    var span = document.createElement("span");
+    var form = document.createElement("form")
+    var input = document.createElement("input");
+    var list = document.createElement("input");
+    input.name = "title";
+    input.type = "text";
+    list.name = "list";
+    list.type = "hidden";
+    list.value = listId;
+    form.onsubmit = onNewCardSubmit;
+    form.appendChild(input);
+    form.appendChild(list);
+    span.appendChild(form);
+    card.appendChild(span);
+    return card;
+  }
+
+  function onNewCardSubmit(e) {
+    var form = e.target;
+    var title = form[0].value;
+    var list = form[1].value;
+    io.socket.post(
+      '/card/create',
+      {title:title,
+        list:list},
+      function(res,jres){
+        if(jres.statusCode === 200) {
+          var span = form.parentElement.parentElement;
+          span.innerHTML = res.title;
+        }
+      });
+    return false;
+  }
 
   function toggleVisibilityAddListForm(e){
     addListDivElement.children[0].hidden = !addListDivElement.children[0].hidden;

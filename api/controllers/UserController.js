@@ -42,12 +42,8 @@ module.exports = {
     });
   },
   logout: function (req, res) {
-    var redirectURL = "/";
-    if (!req.session.user) {
-      redirectURL += '?message="Not signed in"';
-    }
     delete req.session.user;
-    return res.redirect(redirectURL);
+    return res.redirect("/");
   },
   profile: function (req, res) {
     var req_username = req.param('name');
