@@ -48,4 +48,18 @@ module.exports.policies = {
 		// before letting any users feed our rabbits
 		// feed : ['isNiceToAnimals', 'hasRabbitFood']
 	// }
+  BoardController: {
+    add: 'sessionAuth',
+    main: [function(req,res,next){
+            req.body = {} || req.body;
+            var hash = req.param('hash');
+            BoardHelper.getBoardByHashedId(hash,function(board){
+              req.body.board = board;
+              req.body.board.hash = hash;
+              next();
+            });
+          },
+          'hasBoardUrlCleanTitle',
+          'canUserSeeBoard']
+  }
 };

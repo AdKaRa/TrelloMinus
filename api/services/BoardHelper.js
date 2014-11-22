@@ -31,6 +31,14 @@ module.exports = {
     var cleanTitle = title.replace(/[^A-Za-z0-9 ]/g,'').replace(/\s/g, "-").toLowerCase();
     var hash = this.encodeBoardHash(id);
     return BOARD_URL_PREFIX+hash+'/'+cleanTitle;
+  },
+
+  getBoardByHashedId: function(hash,cb) {
+    var boardId = this.decodeBoardHash(hash);
+    Board.findOne({id: boardId}).exec(function(err,board){
+      if(err) throw err;
+      return cb(board);
+    });
   }
 
 };

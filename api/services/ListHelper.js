@@ -1,9 +1,9 @@
 module.exports = {
 
-  returnViewWithUserBoardLists : function(view,res,user,board) {
+  getListByBoard : function(board,cb) {
     List.find({board:board.id}).populate('cards').exec(function(err,lists){
       if(!err && lists){
-        return res.view(view,{user:user,board:board,lists:lists});
+        return cb(lists);
       }
       else {
         console.log(err);
