@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/styles/importer.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/styles/styles.css">
-  
+
   </head>
 
   <body>
@@ -18,8 +18,11 @@
             <a class="navbar-brand" href="/"> Trello Minus </a>
           </div>
           <% if(typeof req.session.user !== 'undefined') { %>
-              <a href="/signout" class="btn btn-danger pull-right" style="margin-top: 6px"> Sign out </a>
-              <a href="/user/<%= req.session.user.name %>" class="btn btn-link pull-right" style="margin-top: 6px; margin-right: 6px;" ><%= req.session.user.name %></a>
+              <div class="btn-group pull-right" role="group" aria-label="..." style="margin-top: 6px">
+                <a href="/user/<%= req.session.user.name %>" class="btn btn-default"><%= req.session.user.name %></a>
+                <button id="add-organization-button" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Organization</button>
+                <a href="/signout" class="btn btn-danger">Sign out</a>
+              </div>
           <% } else {%>
               <a href="/signin" class="btn btn-success pull-right" style="margin-top: 6px"> Sign in </a>
           <% } %>
@@ -28,6 +31,7 @@
     </nav>
     <div class="col-lg-1"></div>
     <div id="body" class="col-lg-10">
+        <%- partial("partials/add_organization.ejs") %>
         <%- body %>
     </div>
 

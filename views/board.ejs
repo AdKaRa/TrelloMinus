@@ -4,7 +4,7 @@ Board <%= board.title %> ( <%=: board.type | capitalize %> )
 <div id="edit-card" class="panel panel-default" hidden style="width:700px">
   <div class="panel-heading clearfix">
     <div class="container-fluid">
-       <h4 class="panel-title pull-left" style="padding-top: 7.5px;">Card "<span id="card-title"></span>" edit</h4> <a class="btn btn-default btn-sm pull-right" onclick="editCardViewClose()">X</a>
+       <h4 class="panel-title pull-left" style="padding-top: 7.5px;">Card "<span id="card-title"></span>" edit</h4> <a class="btn btn-default btn-sm pull-right" onclick="editCardViewClose()"><span class="glyphicon glyphicon-remove"></span></a>
     </div>
   </div>
   <div class="panel-body">
@@ -21,11 +21,11 @@ Board <%= board.title %> ( <%=: board.type | capitalize %> )
     <h4>Add Comment:</h4>
     <form id="add-comment">
       <div class="panel panel-default comment">
-        
+
           <div class="panel-heading comment-user"><%= req.session.user.name %>:</div>
           <div class="panel-body comment-content"><textarea name="content" placeholder="You comment here..." style="border:0; resize:none; width:100%; overflow: hidden;"></textarea></div>
           <div class="panel-footer comment-data"><input class="btn btn-primary" type="submit" value="Comment" /></div>
-        
+
       </div>
     </form>
     <% } %>
@@ -149,8 +149,10 @@ Board <%= board.title %> ( <%=: board.type | capitalize %> )
         list:list},
       function(res,jres){
         if(jres.statusCode === 200) {
-          var span = form.parentElement.parentElement;
+          var span = form.parentElement;
           span.innerHTML = res.title;
+          span.parentElement.id = "card-"+res.id;
+          span.parentElement.onclick = function(e){editCardViewInit(e.target.parentElement);};
         }
       });
     return false;

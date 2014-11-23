@@ -16,7 +16,7 @@ a [Sails](http://sailsjs.org) application
 * ~~Dodawanie kart~~
 * Gwiazdkowanie tablic (Note: irrelevant for now)
 * ~~Możliwość komentowania zadań~~
-* Dodawanie organizacji
+* ~~Dodawanie organizacji~~ (only -,o)
 * Łączenie zadań z użytkowanikami
 
 

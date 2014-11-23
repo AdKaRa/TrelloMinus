@@ -27,6 +27,10 @@ module.exports = {
     boards: {
       collection: "board",
       via: "owner"
+    },
+    organizations: {
+      collection: 'organization',
+      via: 'users'
     }
   },
 

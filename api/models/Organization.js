@@ -8,7 +8,15 @@
 module.exports = {
 
   attributes: {
-
+    name: {
+      type: "string",
+      required: true
+    },
+    users: {
+      collection: 'user',
+      via: 'organizations',
+      dominant: true
+    }
   }
 };
 

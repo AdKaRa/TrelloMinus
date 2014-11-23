@@ -1,0 +1,39 @@
+<div id="add-organization-view" class="panel panel-default" hidden>
+  <div class="panel-heading clearfix">
+    <div class="container-fluid">
+      <h4 class="panel-title pull-left" style="padding-top: 7.5px;">Add new Organization...</h4> <a class="btn btn-default btn-sm pull-right" onclick="hideAddOrganizationView()"><span class="glyphicon glyphicon-remove"></span></a>
+    </div>
+  </div>
+  <div class="panel-body">
+    <form id="add-organization-form">
+      <label for="organization-name">Organization name:</label><input type="text" id="organization-name" name="name" />
+      <input type="submit" value="Create" class="btn btn-primary" />
+    </form>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var addOrganizationButton = document.querySelector("#add-organization-button");
+  var addOrganizationView = document.querySelector("#add-organization-view");
+  if(addOrganizationButton)
+    addOrganizationButton.onclick = function(e) {
+      addOrganizationView.hidden = false;
+    };
+  function hideAddOrganizationView() {
+    addOrganizationView.hidden = true;
+  }
+
+  document.querySelector("#add-organization-form").onsubmit = function(e){
+    var name = e.target.name.value;
+    io.socket.post('/organization/add',
+      {name:name},
+      function(res,jres){
+        if(jres.statusCode === 200) {
+          alert("Organization "+res.name+" created");
+        }
+      }
+    );
+    hideAddOrganizationView();
+    return false;
+  }
+</script>
