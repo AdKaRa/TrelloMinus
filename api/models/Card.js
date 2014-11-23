@@ -13,6 +13,10 @@ module.exports = {
     },
     list: {
       model: 'list'
+    },
+    comments: {
+      collection: 'comment',
+      via: 'card'
     }
   }
 };

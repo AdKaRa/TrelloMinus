@@ -8,7 +8,20 @@
 module.exports = {
 
   attributes: {
-
+  	card: {
+  		model: 'card',
+  		required: true
+  	},
+    username: {
+      type: 'string'
+    },
+  	user: {
+  		model: 'user',
+  		required: true
+  	},
+  	content: {
+  		type: 'string'
+  	}
   }
 };
 
