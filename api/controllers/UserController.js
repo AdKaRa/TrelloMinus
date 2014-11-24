@@ -58,15 +58,18 @@ module.exports = {
     if (UserSessionHelper.isUserAuthenticated(req)) {
       // logged
       if (req.session.user.name === req_username) {
-        return UserBoardsHelper.returnViewWithUserBoards('user_home',res,req.session.user);
-        //return res.view('user_home', {user: req.session.user, boards:boards});
+        UserHelper.getUserBoards(req.session.user,function(boards){
+          return res.view('user_home',{user:req.session.user, boards:boards});
+        });
       }
       else {
         // stranger
       }
     }
-    // guest: login or let them see profile
-    return res.redirect('/signin');
+    else {
+      // guest: login or let them see profile
+      return res.redirect('/signin');
+    }
   },
   validate : function(req,res) {
     var req_name = req.param('name');
