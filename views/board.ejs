@@ -1,42 +1,11 @@
-Board <%= board.title %> ( <%=: board.type | capitalize %> )
+<h3><%= board.title %> <button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-star-empty"></span></button> <button class="btn btn-default btn-xs"><%=: board.type | capitalize %></button></h3>
 
-<!-- EDIT CARD VIEW -->
-<div id="edit-card" class="panel panel-default" hidden style="width:700px">
-  <div class="panel-heading clearfix">
-    <div class="container-fluid">
-       <h4 class="panel-title pull-left" style="padding-top: 7.5px;">Card "<span id="card-title"></span>" edit</h4> <a class="btn btn-default btn-sm pull-right" onclick="editCardViewClose()"><span class="glyphicon glyphicon-remove"></span></a>
-    </div>
-  </div>
-  <div class="panel-body">
-    <form>
-      <label for="title" style="width:100px">Title:</label><input type="text" name="title"/><br />
-      <label for="description" style="width:100px">Description:</label><textarea name="description" placeholder="Description here..."></textarea>
-      <input type="hidden" name="id"/>
-      <input type="submit" class="btn btn-primary" value="Save"/>
-    </form>
-    <hr />
-    <h3>Comments:</h3>
-    <div id="comments-wrapper">Here gonna be comments</div>
-    <% if(typeof req.session.user !== 'undefined') { %>
-    <h4>Add Comment:</h4>
-    <form id="add-comment">
-      <div class="panel panel-default comment">
+<%- partial('partials/edit_card.ejs') %>
 
-          <div class="panel-heading comment-user"><%= req.session.user.name %>:</div>
-          <div class="panel-body comment-content"><textarea name="content" placeholder="You comment here..." style="border:0; resize:none; width:100%; overflow: hidden;"></textarea></div>
-          <div class="panel-footer comment-data"><input class="btn btn-primary" type="submit" value="Comment" /></div>
-
-      </div>
-    </form>
-    <% } %>
-  </div>
-</div>
-
-
-<ul>Your lists:
+<ul id="lists" class="clearfix">
   <% for(var i= 0, l= lists.length; i < l; i++) {%>
-    <li>
-      <div><%= lists[i].name %></div>
+    <li class="bg-primary text-primary">
+      <strong><%= lists[i].name %></strong>
       <div>
         <ul id="list-<%= lists[i].id %>">
           <% _.each(lists[i].cards,function(card) { %>
@@ -47,16 +16,18 @@ Board <%= board.title %> ( <%=: board.type | capitalize %> )
       </div>
     </li>
   <%}%>
-  <li>
+  <li class="bg-info">
     <div id="add-new-list">
       <span>Add new list</span>
       <span id="addListFormWrapper" hidden>
+        <button type="button" class="close pull-right" id="hide-add-button-form"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
         <form id="addListForm" method=POST action="#">
-          <label for="name">New list name:</label><input id="name" type="text" name="name" />
+          <div class="form-group">
+            <label for="name">New list name:</label><input id="name" type="text" name="name" class="form-control" placeholder="List name..."/>
+          </div>
           <input type="hidden" name="board" value="<%= board.hash %>" />
-          <input type="submit" value="Add" />
+          <input type="submit" value="Add" class="btn btn-success"/>
         </form>
-        <button id="hide-add-button-form">X</button>
       </span>
     </div>
   </li>
@@ -70,28 +41,8 @@ Board <%= board.title %> ( <%=: board.type | capitalize %> )
   var addListDivElement = document.querySelector("#add-new-list");
   var hideFormElement = document.querySelector("#hide-add-button-form");
   var addCardButton = document.querySelectorAll(".add-card");
-  var editCardPanel = document.querySelector("#edit-card");
-  var editCardForm = editCardPanel.querySelector("form");
-  var commentsWrapper = document.querySelector("#comments-wrapper");
-  var addCommentForm = document.querySelector("#add-comment");
 
-  editCardForm.onsubmit = onEditCardFormSubmit;
-  addCommentForm.onsubmit = function(e) {
-    var form = e.target;
-    var content = form.content.value;
-    var card = editCardForm.id.value;
-    io.socket.post(
-      '/comment/add',
-      {card:card,content:content},
-      function(res,jres){
-        if(jres.statusCode === 200) {
-          alert("Comment added");
-          console.log(res);
-          editCardViewClose();
-        }
-      });
-    return false;
-  };
+
 
   for(var i = 0, l = addCardButton.length; i < l; i++) addCardButton[i].onclick = addCard;
   function addCard(e){
@@ -107,6 +58,7 @@ Board <%= board.title %> ( <%=: board.type | capitalize %> )
     var form = document.createElement("form")
     var input = document.createElement("input");
     var list = document.createElement("input");
+    card.className = "added-card";
     input.name = "title";
     input.type = "text";
     list.name = "list";
@@ -119,24 +71,6 @@ Board <%= board.title %> ( <%=: board.type | capitalize %> )
     span.appendChild(form);
     card.appendChild(span);
     return card;
-  }
-
-  function commentTemplate(comment) {
-    var commentDiv = document.createElement('div');
-    var commentUserDiv = document.createElement('div');
-    var commentContentDiv = document.createElement('div');
-    var commentDataDiv = document.createElement('div');
-    commentDiv.className = "panel panel-default comment";
-    commentUserDiv.className = "panel-heading comment-user";
-    commentContentDiv.className = "panel-body comment-content";
-    commentDataDiv.className = "panel-footer comment-data";
-    commentUserDiv.innerHTML = comment.username;
-    commentContentDiv.innerHTML = comment.content;
-    commentDataDiv.innerHTML = "Created "+(new Date(comment.createdAt)).toLocaleString().replace(',',' at ');
-    commentDiv.appendChild(commentUserDiv);
-    commentDiv.appendChild(commentContentDiv);
-    commentDiv.appendChild(commentDataDiv);
-    return commentDiv;
   }
 
   function onNewCardSubmit(e) {
@@ -152,7 +86,11 @@ Board <%= board.title %> ( <%=: board.type | capitalize %> )
           var span = form.parentElement;
           span.innerHTML = res.title;
           span.parentElement.id = "card-"+res.id;
-          span.parentElement.onclick = function(e){editCardViewInit(e.target.parentElement);};
+          span.parentElement.onclick = function(e){
+            var element = e.target;
+            if(element.id === undefined || element.id === "") element = element.parentElement;
+            editCardViewInit(element);
+          };
         }
       });
     return false;
@@ -182,49 +120,6 @@ Board <%= board.title %> ( <%=: board.type | capitalize %> )
           window.location = window.location;
         }
       });
-    return false;
-  }
-
-  function editCardViewInit(e) {
-    var cardId = e.id.split('-')[1];
-    commentsWrapper.innerHTML = "";
-    io.socket.post(
-      '/card/get/',
-      {id: cardId},
-      function(res,jres){
-        if(jres.statusCode === 200) {
-          var card = res.card;
-          var comments = res.comments;
-          var form = editCardPanel.querySelector("form");
-          editCardPanel.querySelector("#card-title").innerHTML = card.title;
-          form.title.value = card.title;
-          form.description.value = card.description || "";
-          form.id.value = card.id;
-          for(var i=0, l = comments.length; i < l; i++) {
-            var comment = comments[i];
-            commentsWrapper.appendChild(commentTemplate(comment));
-          }
-        }
-      });
-    editCardPanel.hidden = false;
-  }
-
-  function editCardViewClose() {
-    editCardPanel.hidden = true;
-  }
-
-  function onEditCardFormSubmit(e) {
-    var form = e.target;
-    io.socket.post(
-      '/card/edit/',
-      {id:form.id.value, title:form.title.value,
-        description:form.description.value},
-      function(res,jres){
-        if(jres.statusCode === 200) {
-          document.querySelector("#card-"+res[0].id+" span").innerHTML = res[0].title;
-        }
-      });
-    editCardViewClose();
     return false;
   }
 

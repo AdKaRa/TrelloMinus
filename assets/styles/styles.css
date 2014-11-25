@@ -19,7 +19,16 @@
   width: 200px;
   height: 100px;
   border-radius: 5px;
+  position: relative;
 }
+
+#boards-list li button {
+  position:absolute;
+  z-index: 10;
+  right: 10px;
+  top:10px;
+}
+
 #boards-list li a {
   padding: 10px;
   padding-top: 40px;
@@ -31,6 +40,54 @@
   height: 100%;
 }
 
-#boards-list li:last-of-type div{
+#add-new-board-tile a {
+  color: black !important;
+  cursor: pointer;
+}
+
+/* LISTS AND CARDS */
+
+#lists, #lists ul {
+  list-style: none;
+}
+
+#lists >li {
+  display: inline-block;
+  float: left;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  width: 220px;
+}
+
+#lists ul {
+  padding-left: 0;
+  margin-top: 7px;
+}
+
+#lists ul li {
+  text-align: left;
   color: black;
+  background-color: white;
+  margin: 5px 0;
+  padding: 5px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.added-card input{
+  background: transparent;
+  width:100%;
+  border: 0;
+}
+
+.add-card {
+  display: block;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+#add-new-list {
+  cursor: pointer;
 }

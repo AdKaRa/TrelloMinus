@@ -4,14 +4,15 @@
 
 <ul id="boards-list">
   <% for(var i= 0, l= boards.length; i < l; i++) {%>
-    <li class="bg-primary">
+    <li class="bg-primary clearfix">
+      <button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-star-empty pull-right"></span></button>
       <a href="<%= boards[i].url %>">
         <div><%= boards[i].title %></div>
       </a>
     </li>
   <%}%>
-    <li class="bg-info">
-      <a href="#" onclick="toggleVisibilityAddBoardForm()">
+    <li class="bg-info" id="add-new-board-tile">
+      <a onclick="toggleVisibilityAddBoardForm()">
         <div>Add new board</div>
       </a>
     </li>
