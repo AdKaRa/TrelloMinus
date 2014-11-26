@@ -1,21 +1,29 @@
-<div id="add-new-board" class="panel panel-default" hidden>
-  <div class="panel-heading clearfix">
-    <div class="container-fluid">
-      <h4 class="panel-title pull-left" style="padding-top: 7.5px;">Add New Board...</h4>
-      <button type="button" class="close pull-right" id="hide-add-button-form"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+<div class="clearfix">
+  <div class="col-lg-4"></div>
+  <div class="col-lg-4">
+      <div id="add-new-board" class="panel panel-default" hidden>
+        <div class="panel-heading clearfix">
+          <div class="container-fluid">
+            <h4 class="panel-title pull-left" style="padding-top: 7.5px;">Add New Board...</h4>
+            <button type="button" class="close pull-right" id="hide-add-button-form"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <form id="addBoardForm" method=POST action="#">
+            <div class="form-group">
+                <label for="title">Title:</label><input id="title" type="text" name="title" class="form-control" placeholder="Title"/>
+
+                <label for="type" style="width: 100px;">Type:</label>
+                <select id="type" name="type" class="form-control">
+                  <% _.each(BoardHelper.TYPES,function(type) { %>
+                  <option value="<%= type %>"><%=: type | capitalize %></option>
+                  <% }); %>
+                </select>
+
+            </div>
+            <input class="btn btn-primary pull-right" type="submit" value="Add" />
+          </form>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="panel-body">
-    <form id="addBoardForm" method=POST action="#">
-      <label for="title" style="width: 100px;">Title:</label><input id="title" type="text" name="title" /><br/>
-      <label for="type" style="width: 100px;">Type:</label>
-      <select id="type" name="type">
-        <% _.each(BoardHelper.TYPES,function(type) { %>
-        <option value="<%= type %>"><%=: type | capitalize %></option>
-        <% }); %>
-      </select>
-      <input class="btn btn-primary" type="submit" value="Add" />
-    </form>
-    </form>
-  </div>
 </div>

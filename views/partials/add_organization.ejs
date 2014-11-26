@@ -1,15 +1,23 @@
-<div id="add-organization-view" class="panel panel-default" hidden>
-  <div class="panel-heading clearfix">
-    <div class="container-fluid">
-      <h4 class="panel-title pull-left" style="padding-top: 7.5px;">Add new Organization...</h4>
-      <button type="button" class="close pull-right" onclick="hideAddOrganizationView()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-    </div>
-  </div>
-  <div class="panel-body">
-    <form id="add-organization-form">
-      <label for="organization-name">Organization name:</label><input type="text" id="organization-name" name="name" />
-      <input type="submit" value="Create" class="btn btn-primary" />
-    </form>
+<div class="clearfix">
+  <div class="col-lg-4"></div>
+  <div class="col-lg-4">
+      <div id="add-organization-view" class="panel panel-default" hidden>
+        <div class="panel-heading clearfix">
+          <div class="container-fluid">
+            <h4 class="panel-title pull-left" style="padding-top: 7.5px;">Add new Organization...</h4>
+            <button type="button" class="close pull-right" onclick="hideAddOrganizationView()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <form id="add-organization-form">
+            <div class="form-group">
+              <label for="organization-name">Organization name:</label>
+              <input type="text" id="organization-name" name="name" class="form-control" placeholder="Organization name..." />
+            </div>
+            <input type="submit" value="Create" class="btn btn-primary pull-right" />
+          </form>
+        </div>
+      </div>
   </div>
 </div>
 
@@ -17,7 +25,7 @@
   var addOrganizationButton = document.querySelector("#add-organization-button");
   var addOrganizationView = document.querySelector("#add-organization-view");
   if(addOrganizationButton)
-    addOrganizationButton.onclick = function(e) {
+    addOrganizationButton.onclick = function() {
       addOrganizationView.hidden = false;
     };
   function hideAddOrganizationView() {
