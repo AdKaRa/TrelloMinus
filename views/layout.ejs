@@ -24,7 +24,11 @@
                 <a href="/signout" class="btn btn-danger">Sign out</a>
               </div>
           <% } else {%>
-              <a href="/signin" class="btn btn-success pull-right" style="margin-top: 6px"> Sign in </a>
+            <div class="btn-group pull-right" role="group" aria-label="..." style="margin-top: 6px">
+              <a href="/signin" class="btn btn-primary">Sign in</a>
+              <button class="btn btn-default disabled">OR</button>
+              <a href="/signup" class="btn btn-success">Sign up</a>
+            </div>
           <% } %>
 
         </div>
