@@ -5,6 +5,8 @@ a [Sails](http://sailsjs.org) application
 ##Dependencies:
 * bcrypt
 * hashids
+* mocha
+* supertest
 
 ##Progress:
 * ~~Logowanie~~
@@ -25,5 +27,14 @@ a [Sails](http://sailsjs.org) application
 After git clone, enter project directory and install appropriate modules by typing:
 `npm install`
 
-If you add/want to add a module to the project type
+If you add/want to add a module to the project type:
 `npm install <module_name> --save`
+
+##Test:
+
+Tests are added to test directory in unit (for unit testing purposes) and respectively to subdirectories (models, controllers, etc.).
+
+To run tests simply type in main directory:
+`mocha`
+
+
