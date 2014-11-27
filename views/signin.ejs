@@ -1,5 +1,8 @@
-<div id="message"></div>
-
+<div class="alert alert-danger" role="alert" hidden id="message">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <span class="sr-only">Error:</span>
+  <div id="message-text" style="display:inline"></div>
+</div>
 
 <div class="col-lg-4"></div>
 <div class="col-lg-4">
@@ -29,19 +32,21 @@
 
     document.querySelector('#signin-form').onsubmit = function() {
         var divMessage = document.querySelector("#message");
+        var divMessageText = document.querySelector("#message-text");
         var username = document.querySelector("#name").value;
         var password = document.querySelector("#password").value;
+        divMessage.hidden = true;
         io.socket.post(
                 '/user/login',
                 {name:username, password:password},
                 function(res,jsres) {
-                    console.log(res,jsres);
                     if(jsres.statusCode === 200) {
                         if(res.redirect)
                             window.location = res.redirect;
                     }
                     else {
-                        divMessage.innerHTML = res.message;
+                        divMessage.hidden = false;
+                        divMessageText.innerHTML = res.message;
                     }
                 }
         );
