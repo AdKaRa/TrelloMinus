@@ -35,10 +35,13 @@ module.exports = {
 
   getBoardByHashedId: function(hash,cb) {
     var boardId = this.decodeBoardHash(hash);
-    Board.findOne({id: boardId}).exec(function(err,board){
+    Board.findOne({id: boardId}).populateAll().exec(function(err,board){
       if(err) throw err;
       return cb(board);
     });
+  },
+  isStarredBoard: function(user,board) {
+    return (_.where(board.starredBy,{id:user.id})).length !== 0;
   }
 
 };

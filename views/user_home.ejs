@@ -1,11 +1,25 @@
 <%- partial("partials/add_board.ejs") %>
 
+<% if(starred.length !== 0){ %>
+  <h3>Your Favourite Boards:</h3>
+  <ul class="boards-list">
+    <% for(var i= 0, l= starred.length; i < l; i++) {%>
+    <li class="bg-primary clearfix">
+      <button class="btn btn-primary btn-xs" data-hash="<%= starred[i].url %>" onclick="toggleStareBoard(this)"><span class="glyphicon glyphicon-star"></span></button>
+      <a href="<%= starred[i].url %>">
+        <div><%= starred[i].title %></div>
+      </a>
+    </li>
+    <%}%>
+  </ul>
+<% } %>
+
 <h3>Your boards:</h3>
 
-<ul id="boards-list">
+<ul class="boards-list">
   <% for(var i= 0, l= boards.length; i < l; i++) {%>
     <li class="bg-primary clearfix">
-      <button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-star-empty pull-right"></span></button>
+      <button class="btn btn-primary btn-xs" data-hash="<%= boards[i].url %>" onclick="toggleStareBoard(this)"><span class="glyphicon glyphicon-star-empty"></span></button>
       <a href="<%= boards[i].url %>">
         <div><%= boards[i].title %></div>
       </a>
@@ -46,4 +60,5 @@
 
   formElement.onsubmit = addBoardSubmit;
   hideFormElement.onclick = toggleVisibilityAddBoardForm;
+
 </script>

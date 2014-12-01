@@ -16,10 +16,14 @@ a [Sails](http://sailsjs.org) application
 * Przenoszenie zadań między listami (Note: delayed until d&d)
 * ~~Możliwość opisywania zadań~~
 * ~~Dodawanie kart~~
-* Gwiazdkowanie tablic (Note: irrelevant for now)
+* ~~Gwiazdkowanie tablic~~
 * ~~Możliwość komentowania zadań~~
 * ~~Dodawanie organizacji~~ (only -,o)
 * Łączenie zadań z użytkowanikami
+* Punktowanie zadań
+* Określenie deadline
+* Zmiana kolejności zadań (also delayed til d&d)
+* Dodawanie labeli do zadań
 
 
 ##Notes:

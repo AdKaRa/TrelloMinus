@@ -9,7 +9,7 @@
  */
 module.exports = function(req,res,next) {
 	var user = req.session.user;
-	if((user && user.id === req.body.board.owner) || (req.body.board.type === BoardHelper.TYPES.PUBLIC_BOARD)) {
+	if((user && user.id === req.body.board.owner.id) || (req.body.board.type === BoardHelper.TYPES.PUBLIC_BOARD)) {
 		return next();
 	}
 	else {

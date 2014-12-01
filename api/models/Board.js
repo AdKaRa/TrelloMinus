@@ -24,6 +24,10 @@ module.exports = {
       type: "string",
       enum: ["public", "shared", "private"],
       defaultsTo: "private"
+    },
+    starredBy: {
+      collection: 'user',
+      via: 'starredBoards'
     }
   }
 };

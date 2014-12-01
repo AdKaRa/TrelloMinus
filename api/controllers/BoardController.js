@@ -26,6 +26,22 @@ module.exports = {
         return res.json({message:"Something went wrong"});
       }
     });
+  },
+  stare: function(req,res) {
+    var user = req.session.user;
+    var board = req.body.board;
+
+    if(board.starred){
+      board.starredBy.remove(user.id);
+    }
+    else {
+      board.starredBy.add(user);
+    }
+    board.save(function(err){
+      if(err) throw err;
+    });
+    res.json(board);
+
   }
 };
 

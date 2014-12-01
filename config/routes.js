@@ -45,7 +45,8 @@ module.exports.routes = {
     view: 'signup'
   },
   'get /b/:hash':'BoardController.main',
-  'get /b/:hash/:title': 'BoardController.main'
+  'get /b/:hash/:title': 'BoardController.main',
+  'get /b/:hash/:title/stare': 'BoardController.stare'
 
   /***************************************************************************
   *                                                                          *

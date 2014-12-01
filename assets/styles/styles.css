@@ -8,11 +8,11 @@
 
 /* BOARDS */
 
-#boards-list {
+.boards-list {
   list-style: none;
 }
 
-#boards-list li {
+.boards-list li {
   display: inline-block;
   text-align: center;
   margin: 10px;
@@ -22,14 +22,14 @@
   position: relative;
 }
 
-#boards-list li button {
+.boards-list li button {
   position:absolute;
   z-index: 10;
   right: 10px;
   top:10px;
 }
 
-#boards-list li a {
+.boards-list li a {
   padding: 10px;
   padding-top: 40px;
   color: white;

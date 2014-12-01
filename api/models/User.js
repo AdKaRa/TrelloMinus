@@ -31,6 +31,11 @@ module.exports = {
     organizations: {
       collection: 'organization',
       via: 'users'
+    },
+    starredBoards: {
+      collection: 'board',
+      via: 'starredBy',
+      dominant: true
     }
   },
 
