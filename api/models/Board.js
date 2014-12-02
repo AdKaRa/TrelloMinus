@@ -28,6 +28,10 @@ module.exports = {
     starredBy: {
       collection: 'user',
       via: 'starredBoards'
+    },
+    organization: {
+      model: 'organization',
+      via: 'boards'
     }
   }
 };

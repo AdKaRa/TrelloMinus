@@ -17,6 +17,10 @@ module.exports = {
       collection: 'user',
       via: 'organizations',
       dominant: true
+    },
+    boards: {
+      collection: 'board',
+      via: 'organization'
     }
   }
 };

@@ -29,6 +29,13 @@
   top:10px;
 }
 
+.boards-list li strong {
+  position:absolute;
+  z-index: 9;
+  left: 10px;
+  top:10px;
+}
+
 .boards-list li a {
   padding: 10px;
   padding-top: 40px;

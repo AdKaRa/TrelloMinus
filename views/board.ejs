@@ -1,4 +1,4 @@
-<h3><%= board.title %> <button class="btn btn-default btn-xs" data-hash="<%= req.path %>" onclick="toggleStareBoard(this)"><span class="glyphicon glyphicon-star<% if(!board.starred) {%>-empty<%}%>"></span></button> <button class="btn btn-default btn-xs"><%=: board.type | capitalize %></button></h3>
+<h3><%= board.title %> <button class="btn btn-default btn-xs" data-hash="<%= req.path %>" onclick="toggleStareBoard(this)"><span class="glyphicon glyphicon-star<% if(!board.starred) {%>-empty<%}%>"></span></button> <button class="btn btn-default btn-xs"><%=: board.type | capitalize %> <% if(board.type === "shared"){%> with <%=: board.organization.name | capitalize %><%}%></button></h3>
 
 <%- partial('partials/edit_card.ejs') %>
 

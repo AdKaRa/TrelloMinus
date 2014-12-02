@@ -19,6 +19,17 @@ module.exports = {
         result = organization;
       return res.json(result);
     });
+  },
+  user: function(req,res) {
+    var user = req.session.user;
+    User.findOne({id: user.id}).populate('organizations').exec(function (err, userOrganizations) {
+      if(err || !userOrganizations)
+        console.log("Lack of organizations");
+      else
+        return res.json(userOrganizations.organizations);
+
+    });
   }
+
 };
 

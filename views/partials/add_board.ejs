@@ -16,10 +16,17 @@
                 <label for="type" style="width: 100px;">Type:</label>
                 <select id="type" name="type" class="form-control">
                   <% _.each(BoardHelper.TYPES,function(type) { %>
-                  <option value="<%= type %>"><%=: type | capitalize %></option>
+                  <option id="add-<%= type %>-board-option" value="<%= type %>"><%=: type | capitalize %></option>
                   <% }); %>
                 </select>
-
+                <p id="organization-wrapper" hidden>
+                  <label for="organization">Organization to share board with:</label>
+                  <select id="organization" name="organization" class="form-control">
+                    <% _.each(organizations,function(o) { %>
+                    <option value="<%= o.id %>"><%=: o.name | capitalize %></option>
+                    <% }); %>
+                  </select>
+                </p>
             </div>
             <input class="btn btn-primary pull-right" type="submit" value="Add" />
           </form>
@@ -27,3 +34,15 @@
       </div>
     </div>
 </div>
+
+<script type="text/javascript">
+  var organizationWrapper = document.querySelector("#organization-wrapper");
+  var organizationSelect = document.querySelector("#organization");
+  document.querySelector("#type").onchange = function(e) {
+    if(e.target.value !== "shared") {
+      organizationWrapper.hidden = true;
+      return;
+    }
+    organizationWrapper.hidden = false;
+  };
+</script>

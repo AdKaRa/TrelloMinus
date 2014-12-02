@@ -60,7 +60,9 @@ module.exports = {
       if (req.session.user.name === req_username) {
         UserHelper.getUserBoards(req.session.user,function(boards){
           UserHelper.getUserStarredBoards(req.session.user,function(starred){
-            return res.view('user_home',{user:req.session.user, starred:starred, boards:boards});
+            UserHelper.getUserOrganizations(req.session.user,function(organizations){
+              return res.view('user_home',{user:req.session.user, starred:starred, boards:boards,organizations:organizations});
+            });
           });
         });
       }

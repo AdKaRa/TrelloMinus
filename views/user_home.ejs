@@ -6,6 +6,7 @@
     <% for(var i= 0, l= starred.length; i < l; i++) {%>
     <li class="bg-primary clearfix">
       <button class="btn btn-primary btn-xs" data-hash="<%= starred[i].url %>" onclick="toggleStareBoard(this)"><span class="glyphicon glyphicon-star"></span></button>
+      <% if(starred[i].type === "shared") { %><strong><%= _.where(organizations,{id:starred[i].organization})[0].name %></strong> <%}%>
       <a href="<%= starred[i].url %>">
         <div><%= starred[i].title %></div>
       </a>
@@ -20,6 +21,7 @@
   <% for(var i= 0, l= boards.length; i < l; i++) {%>
     <li class="bg-primary clearfix">
       <button class="btn btn-primary btn-xs" data-hash="<%= boards[i].url %>" onclick="toggleStareBoard(this)"><span class="glyphicon glyphicon-star-empty"></span></button>
+      <% if(boards[i].type === "shared") {%><strong><%= boards[i].organization.name %></strong> <%}%>
       <a href="<%= boards[i].url %>">
         <div><%= boards[i].title %></div>
       </a>
@@ -45,7 +47,8 @@
     io.socket.post(
       '/board/add',
       {title:this.title.value,
-      type: this.type.value},
+      type: this.type.value,
+      organization:this.organization.value},
       function(res,jres){
         if(res.message) {
           alert(res.message);

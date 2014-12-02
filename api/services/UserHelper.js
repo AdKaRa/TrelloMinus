@@ -5,6 +5,8 @@
  *
  */
 
+//TODO: add method to fetch boards from organization but other owners
+
 module.exports = {
   getUserBoards: function(user,cb){
     Board.find({owner:user.id}).populateAll().exec(function(err,boards) {
@@ -22,7 +24,7 @@ module.exports = {
       });
   },
   getUserStarredBoards: function(user, cb) {
-    User.findOne({id:user.id}).populate('starredBoards').exec(function(err,starred) {
+    User.findOne({id:user.id}).populateAll().exec(function(err,starred) {
       if (!err && starred){
         var result = starred.starredBoards;
         result = result.map(function(board){
@@ -30,6 +32,15 @@ module.exports = {
           return board;
         });
         return cb(result);
+      }
+      else
+        console.log(err);
+    });
+  },
+  getUserOrganizations: function(user, cb) {
+    User.findOne({id:user.id}).populateAll().exec(function(err,userOrganizarions) {
+      if (!err && userOrganizarions){
+        return cb(userOrganizarions.organizations);
       }
       else
         console.log(err);
