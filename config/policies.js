@@ -50,11 +50,11 @@ module.exports.policies = {
 	// }
   BoardController: {
     add: 'sessionAuth',
-    main: ['dehashBoard',
+    main: ['sessionAuth','dehashBoard',
           'hasBoardUrlCleanTitle',
           'canUserSeeBoard',
           'isUserStarredBoard'],
-    stare: ['dehashBoard',
+    stare: ['sessionAuth','dehashBoard',
             'isUserStarredBoard']
   }
 };

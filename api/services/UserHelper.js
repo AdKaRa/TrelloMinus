@@ -5,11 +5,16 @@
  *
  */
 
-//TODO: add method to fetch boards from organization but other owners
-
 module.exports = {
-  getUserBoards: function(user,cb){
-    Board.find({owner:user.id}).populateAll().exec(function(err,boards) {
+  getUserBoards: function(user,organizations,cb){
+    var organizationsIDs = organizations.map(function(o){
+      return o.id;
+    });
+    Board.find({ or:[
+                    {owner:user.id},
+                    {organization:organizationsIDs}
+                    ]}
+    ).populateAll().exec(function(err,boards) {
         if (!err && boards){
           boards = boards.filter(function(board){
             return !BoardHelper.isStarredBoard(user,board);

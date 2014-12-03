@@ -19,3 +19,5 @@ function toggleStareBoard(elem) {
       }
     });
 }
+
+$('.dropdown-toggle').dropdown();

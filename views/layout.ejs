@@ -20,7 +20,16 @@
           <% if(typeof req.session.user !== 'undefined') { %>
               <div class="btn-group pull-right" role="group" aria-label="..." style="margin-top: 6px">
                 <a href="/user/<%= req.session.user.name %>" class="btn btn-default"><%= req.session.user.name %></a>
-                <button id="add-organization-button" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Organization</button>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    Organizations
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a id="add-organization-button" href="#"><span class="glyphicon glyphicon-plus"></span> Add Organization...</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-user"></span> Invite Member</a></li>
+                  </ul>
+                </div>
                 <a href="/signout" class="btn btn-danger">Sign out</a>
               </div>
           <% } else {%>
@@ -41,6 +50,7 @@
 
 
     <script src="/js/dependencies/sails.io.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="/js/essentials.js"></script>
   </body>
