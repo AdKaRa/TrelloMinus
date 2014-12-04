@@ -61,7 +61,9 @@ module.exports = {
         UserHelper.getUserOrganizations(req.session.user,function(organizations){
           UserHelper.getUserBoards(req.session.user,organizations,function(boards){
             UserHelper.getUserStarredBoards(req.session.user,function(starred){
-              return res.view('user_home',{user:req.session.user, starred:starred, boards:boards,organizations:organizations});
+              UserHelper.getUserInvitations(req.session.user,function(invitations){
+                return res.view('user_home',{user:req.session.user, starred:starred, boards:boards,organizations:organizations, invitations:invitations});
+              });
             });
           });
         });

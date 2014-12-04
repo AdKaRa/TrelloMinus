@@ -50,5 +50,14 @@ module.exports = {
       else
         console.log(err);
     });
+  },
+  getUserInvitations: function(user,cb) {
+    Invitation.find({recipient:user.id}).populateAll().exec(function(err,invitations) {
+      if (!err && invitations){
+        return cb(invitations);
+      }
+      else
+        console.log(err);
+    });
   }
 };

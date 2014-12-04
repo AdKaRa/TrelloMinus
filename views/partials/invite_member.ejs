@@ -1,0 +1,65 @@
+<div class="clearfix">
+  <div class="col-lg-4"></div>
+  <div class="col-lg-4">
+    <div id="invite-member" class="panel panel-default" hidden>
+      <div class="panel-heading clearfix">
+        <div class="container-fluid">
+          <h4 class="panel-title pull-left" style="padding-top: 7.5px;">Invite a Member</h4>
+          <button type="button" class="close pull-right" id="invite-member-close-button"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        </div>
+      </div>
+      <div class="panel-body">
+        <form id="invite-member-form" method=POST action="#">
+          <div class="form-group">
+            <label for="username">Username:</label><input id="username" type="text" name="recipient" class="form-control" placeholder="Username"/>
+            <p id="organization-wrapper">
+              <label for="invite-organization">Organization to share board with:</label>
+              <select id="invite-organization" name="organization" class="form-control">
+              </select>
+            </p>
+          </div>
+          <input class="btn btn-primary pull-right" type="submit" value="Send" />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('#invite-member-button, #invite-member-close-button').click(function(){
+    var inviteDiv =  $('#invite-member');
+    var organizationSelect = $('#invite-organization');
+    if(inviteDiv.is(":hidden")) {
+      io.socket.get('/organization/user',function(res,jres){
+        if(jres.statusCode === 200) {
+          organizationSelect.html("");
+          res.forEach(function(o){
+            organizationSelect.append($("<option/>",{value: o.id}).html(o.name));
+          });
+        }
+      });
+    }
+    inviteDiv.toggle("fast");
+  });
+
+  $('#invite-member-form').submit(function(){
+    var recipient = this.recipient.value;
+    var organization = this.organization.value;
+    console.log(recipient,organization);
+    io.socket.post(
+      '/invitation/send',
+      {
+        recipient: recipient,
+        organization: organization
+      },
+      function(res,jres) {
+        if(res.message) {
+          alert(res.message);
+        }
+        if(jres.statusCode === 200)
+          $('#invite-member').toggle("fast");
+      }
+    );
+    return false;
+  });
+</script>

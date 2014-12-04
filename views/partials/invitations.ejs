@@ -1,0 +1,24 @@
+<% if(invitations.length !== 0) { %>
+<div class="clearfix">
+  <div class="col-lg-2"></div>
+  <div class="col-lg-8">
+    <div id="invitation-pending" class="panel panel-default">
+      <div class="panel-heading clearfix">
+        <div class="container-fluid">
+          <h4 class="panel-title pull-left" style="padding-top: 7.5px;">Invitations pending</h4>
+          <!--<button type="button" class="close pull-right" id="invitation-pending-close"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>-->
+        </div>
+      </div>
+      <div class="panel-body">
+        <ul class="list-group" id="invitation-list">
+          <% _.each(invitations,function(inv){ %>
+            <li class="list-group-item clearfix" style="line-height: 28px;">User <strong><%= inv.sender.name %></strong> invites you to join <strong><%= inv.to.name %></strong>
+              <div class="btn-group btn-group-sm pull-right"><button onclick="acceptInvitation(<%= inv.id %>,this)" class="btn btn-primary btn-">Accept</button> <button onclick="refuseInvitation(<%= inv.id %>,this)" class="btn btn-danger">Refuse</button></div>
+            </li>
+          <%});%>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<%}%>

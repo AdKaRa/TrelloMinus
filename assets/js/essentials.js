@@ -20,4 +20,29 @@ function toggleStareBoard(elem) {
     });
 }
 
+function acceptInvitation(id,elem) {
+  io.socket.post('/invitation/accept',{invitation:id},function(res,jres){
+    if(res.message) {
+      alert(res.message);
+    }
+    if(jres.statusCode === 200) {
+      location.reload();
+    }
+  });
+}
+
+function refuseInvitation(id,elem) {
+  io.socket.post('/invitation/decline',{invitation:id},function(res,jres){
+    if(res.message) {
+      alert(res.message);
+    }
+    if(jres.statusCode === 200) {
+      $(elem).parent().parent().remove();
+      if($("#invitation-list").children().length === 0) {
+        $("#invitation-pending").remove();
+      }
+    }
+  });
+}
+
 $('.dropdown-toggle').dropdown();

@@ -1,3 +1,4 @@
+<%- partial("partials/invitations.ejs") %>
 <%- partial("partials/add_board.ejs") %>
 
 <% if(starred.length !== 0){ %>
@@ -54,7 +55,7 @@
           alert(res.message);
         }
         if(jres.statusCode === 200) {
-          window.location = window.location;
+          location.reload();
         }
       });
     return false;

@@ -21,6 +21,10 @@ module.exports = {
     boards: {
       collection: 'board',
       via: 'organization'
+    },
+    invitations: {
+      collection: 'invitation',
+      via: 'to'
     }
   }
 };
