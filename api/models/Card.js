@@ -17,6 +17,14 @@ module.exports = {
     comments: {
       collection: 'comment',
       via: 'card'
+    },
+    deadline: {
+      type: 'datetime'
+    },
+    priority: {
+      type: 'string',
+      enum: ['none','low','medium','high'],
+      defaultsTo: 'none'
     }
   }
 };

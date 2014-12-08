@@ -12,6 +12,13 @@
         <form class="clearfix">
           <div class="form-group">
             <label for="title" style="width:100px">Title:</label><input type="text" name="title" class="form-control" placeholder="Title..."/>
+            <label for="deadline">Deadline:</label><input id="deadline" type="datetime" name="deadline" class="form-control" placeholder="MM/DD/YYYY HH:mm:ss" />
+            <label for="priority">Priority:</label>
+            <select id="priority" name="priority" class="form-control">
+              <% _.each(CardHelper.PRIORITIES, function(p) {%>
+                <option value="<%= p %>"><%= p %></option>
+              <%});%>
+            </select>
             <label for="description" style="width:100px">Description:</label><textarea name="description" placeholder="Description here..." class="form-control"></textarea>
             <input type="hidden" name="id"/>
           </div>
@@ -49,6 +56,7 @@
     var form = e.target;
     var content = form.content.value;
     var card = editCardForm.id.value;
+    var spanParent = document.querySelector("#card-"+card);
     io.socket.post(
       '/comment/add',
       {card:card,content:content},
@@ -57,6 +65,7 @@
           alert("Comment added");
           console.log(res);
           editCardViewClose();
+          editCardViewInit(spanParent);
         }
       });
     return false;
@@ -94,6 +103,17 @@
           editCardPanel.querySelector("#card-title").innerHTML = card.title;
           editCardPanel.querySelector("#add-comment").content.value = "";
           form.title.value = card.title;
+          form.deadline.value = "";
+          if(card.deadline || card.deadline !== "") {
+            var deadline = new Date(card.deadline);
+            var formattedDeadline = ('0'+(deadline.getMonth()+1)).slice(-2)+
+              "/"+('0'+deadline.getDate()).slice(-2)+
+              "/"+deadline.getFullYear()+
+              " "+('0'+deadline.getHours()).slice(-2)+":"+
+              ('0'+deadline.getMinutes()).slice(-2)+":"+('0'+deadline.getSeconds()).slice(-2);
+            form.deadline.value = formattedDeadline;
+          }
+          form.priority.value = card.priority || "none";
           form.description.value = card.description || "";
           form.id.value = card.id;
           for(var i=0, l = comments.length; i < l; i++) {
@@ -111,16 +131,21 @@
 
   function onEditCardFormSubmit(e) {
     var form = e.target;
+    var span = document.querySelector("#card-"+form.id.value+" span");
+    var deadline = form.deadline.value === "" ? "" : (new Date(form.deadline.value)).toJSON();
     io.socket.post(
       '/card/edit/',
       {id:form.id.value, title:form.title.value,
+        priority:form.priority.value,
+        deadline: deadline,
         description:form.description.value},
       function(res,jres){
         if(jres.statusCode === 200) {
-          document.querySelector("#card-"+res[0].id+" span").innerHTML = res[0].title;
+          span.innerHTML = res[0].title;
         }
       });
     editCardViewClose();
+    editCardViewInit(span.parentNode);
     return false;
   }
 
