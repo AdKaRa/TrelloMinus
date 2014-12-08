@@ -7,7 +7,7 @@
     <li class="bg-primary text-primary">
       <strong><%= lists[i].name %></strong>
       <div>
-        <ul id="list-<%= lists[i].id %>">
+        <ul id="list-<%= lists[i].id %>" class="sortable">
           <% _.each(lists[i].cards,function(card) { %>
             <li id="card-<%= card.id %>" onclick="editCardViewInit(this)"><span><%= card.title %></span></li>
           <% }); %>
@@ -40,8 +40,6 @@
   var addListDivElement = document.querySelector("#add-new-list");
   var hideFormElement = document.querySelector("#hide-add-button-form");
   var addCardButton = document.querySelectorAll(".add-card");
-
-
 
   for(var i = 0, l = addCardButton.length; i < l; i++) addCardButton[i].onclick = addCard;
   function addCard(e){
@@ -125,6 +123,11 @@
   formElement.onsubmit = addListSubmit;
   addListDivElement.onclick = toggleVisibilityAddListForm;
   hideFormElement.onclick = toggleVisibilityAddListForm;
+
+  $('.sortable').sortable({connectWith:'.sortable',
+    helper : 'clone',
+    dropOnEmpty: true,
+  stop:function(e,ui){console.log(e,ui,'save');}}).disableSelection();
 
 </script>
 

@@ -104,7 +104,7 @@
           editCardPanel.querySelector("#add-comment").content.value = "";
           form.title.value = card.title;
           form.deadline.value = "";
-          if(card.deadline || card.deadline !== "") {
+          if(card.deadline && card.deadline !== "") {
             var deadline = new Date(card.deadline);
             var formattedDeadline = ('0'+(deadline.getMonth()+1)).slice(-2)+
               "/"+('0'+deadline.getDate()).slice(-2)+

@@ -30,6 +30,16 @@ module.exports = {
       res.status(400);
       return res.json({message:"You have to be logged to add a list"});
     }
+  },
+  reorder: function(req,res){
+    var cardID = req.param("card");
+    var position = req.param("position");
+    var listID = req.param("column");
+    Card.findOne({id:cardID}).exec(function(err,card){
+      List.findOne({id:listID}).populateAll().exec(function(err,list){
+        //TODO: do it!
+      });
+    });
   }
 };
 
