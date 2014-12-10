@@ -25,20 +25,14 @@ module.exports = {
   },
   send: function(req,res){
     var sender = req.session.user;
-    var recip = req.param("recipient");
+    var recipient = req.body.recipient;
     var to = req.param("organization");
-    User.findOne({name:recip}).exec(function(err,recipient){
-      if(err||!recipient) {
+    Invitation.create({sender:sender.id, recipient:recipient.id,to:to}).exec(function(err,invitation){
+      if(err || !invitation) {
         res.status(400);
-        return res.json({message: "There is no user with this username"});
+        return res.json({message: "Could not create invitation"});
       }
-      Invitation.create({sender:sender.id, recipient:recipient.id,to:to}).exec(function(err,invitation){
-        if(err || !invitation) {
-          res.status(400);
-          return res.json({message: "Could not create invitation"});
-        }
-        return res.json({message: "Invitation for "+recipient.name+" was sent"});
-      });
+      return res.json({message: "Invitation for "+recipient.name+" was sent"});
     });
   }
 };

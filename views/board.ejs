@@ -8,8 +8,9 @@
       <strong><%= lists[i].name %></strong>
       <div>
         <ul id="list-<%= lists[i].id %>" class="sortable">
-          <% _.each(lists[i].cards,function(card) { %>
-            <li id="card-<%= card.id %>" onclick="editCardViewInit(this)"><span><%= card.title %></span></li>
+          <% var cards =  _.sortBy(lists[i].cards,'position'); %>
+          <% _.each(cards,function(card) { %>
+            <li id="card-<%= card.id %>" onclick="editCardViewInit(this)" data-position="<%= card.position %>"><span><%= card.title %></span></li>
           <% }); %>
         </ul>
         <span class="add-card">Add Card</span>
@@ -124,10 +125,23 @@
   addListDivElement.onclick = toggleVisibilityAddListForm;
   hideFormElement.onclick = toggleVisibilityAddListForm;
 
+  function reorderCards(cardid, column, position) {
+    io.socket.post('/list/reorder',{card:cardid,column:column,position:position},
+    function(res,jres){
+      console.log("Card reorder",res,jres);
+    });
+  }
+
   $('.sortable').sortable({connectWith:'.sortable',
     helper : 'clone',
     dropOnEmpty: true,
-  stop:function(e,ui){console.log(e,ui,'save');}}).disableSelection();
+  stop:function(e,ui){
+    var item = $(ui.item[0]);
+    var column = item.parent().attr('id').split("-")[1];
+    var card = item[0].id.split("-")[1];
+    var position = item.index();
+    reorderCards(card,column,position);
+  }}).disableSelection();
 
 </script>
 

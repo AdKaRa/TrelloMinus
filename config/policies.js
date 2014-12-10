@@ -56,5 +56,9 @@ module.exports.policies = {
           'isUserStarredBoard'],
     stare: ['sessionAuth','dehashBoard',
             'isUserStarredBoard']
+  },
+  InvitationController: {
+    send: ['doRecipientExists',
+          'isNotAlreadyInOrganization']
   }
 };

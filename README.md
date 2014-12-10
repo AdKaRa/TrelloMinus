@@ -13,7 +13,7 @@ a [Sails](http://sailsjs.org) application
 * ~~Rejestrowanie~~
 * ~~Dodawanie list~~
 * ~~Dodawanie nowych tablic~~
-* Przenoszenie zadań między listami (note: delayed until d&d)
+* ~~Przenoszenie zadań między listami (note: delayed until d&d)~~
 * ~~Możliwość opisywania zadań~~
 * ~~Dodawanie kart~~
 * ~~Gwiazdkowanie tablic~~
@@ -22,7 +22,7 @@ a [Sails](http://sailsjs.org) application
 * Łączenie zadań z użytkowanikami
 * ~~Punktowanie zadań~~ (note: aka setting priority)
 * ~~Określenie deadline~~
-* Zmiana kolejności zadań (also delayed til d&d)
+* ~~Zmiana kolejności zadań (also delayed til d&d)~~
 * Dodawanie labeli do zadań
 
 

@@ -37,7 +37,22 @@ module.exports = {
     var listID = req.param("column");
     Card.findOne({id:cardID}).exec(function(err,card){
       List.findOne({id:listID}).populateAll().exec(function(err,list){
-        //TODO: do it!
+        Card.find({list:listID}).sort('position ASC').exec(function(err,cards){
+          var index = _.findIndex(cards,{id:card.id});
+          var i = 0;
+          if(list.id === card.list) {
+            cards.splice(index,1);
+          }
+          else {
+            list.cards.add(card);
+          }
+          cards.splice(position,0,card);
+          _.each(cards,function(c){c.position = i++;});
+          list.cards = cards;
+          list.save(function(){
+            res.json({message:'OK'});
+          });
+        });
       });
     });
   }

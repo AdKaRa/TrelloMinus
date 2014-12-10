@@ -25,6 +25,16 @@ module.exports = {
       type: 'string',
       enum: ['none','low','medium','high'],
       defaultsTo: 'none'
+    },
+    position: {
+      type: 'integer'
     }
+  },
+
+  afterCreate: function(newOne, cb) {
+    Card.count({list:newOne.list}).exec(function(err,count){
+      Card.update({id:newOne.id},{position:count-1}).exec(console.log);
+      cb();
+    });
   }
 };
