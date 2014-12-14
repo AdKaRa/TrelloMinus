@@ -19,6 +19,10 @@
                 <option value="<%= p %>"><%= p %></option>
               <%});%>
             </select>
+            <label for="labels">Labels:</label><div id="labels" style="width:100%;">
+              <button style="background-color: #0c8da0 !important;" class="btn btn-default label-picker" data-toggle="popover" data-placement="bottom">&nbsp;&nbsp;</button>
+              <button class="btn btn-default label-picker" data-toggle="popover" data-placement="bottom"><span class="glyphicon glyphicon-plus"></span></button>
+            </div>
             <label for="description" style="width:100px">Description:</label><textarea name="description" placeholder="Description here..." class="form-control"></textarea>
             <input type="hidden" name="id"/>
           </div>
@@ -148,5 +152,41 @@
     editCardViewInit(span.parentNode);
     return false;
   }
+
+  $(function(){
+    $(".label-picker").popover({html:true,
+      content:function(){
+        var other = $(".popover");
+        if(other.length > 0)
+          other.popover('hide');
+        var content = $('<div/>');
+        var li = ['#428bca','#5cb85c','#5bc0de','#f0ad4e','#d9534f'];
+        li.forEach(function(color){
+          content.append($('<a/>',{
+            class:"btn btn-lg btn-block",
+            css: {
+              'background-color': color,
+              'min-width': '200px'
+            },
+            html: '&nbsp;'
+          }))
+        });
+        return content;
+    },
+    title: function(){
+      var elem = $(this);
+      var text = elem.children().is(".glyphicon-plus") ? "Add label" : "Change label";
+      var close = $('<button/>',{
+        id: 'close-label-picker',
+        class:"close pull-right",
+        html:'<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>'
+      }).click(function(){
+        elem.popover('hide');
+      });
+      return  $('<div/>',{class:"clearfix"})
+        .append($('<div/>',{html:text,css:{'display':'inline','line-height':'24px'}}))
+        .append(close);
+    }});
+  });
 
 </script>

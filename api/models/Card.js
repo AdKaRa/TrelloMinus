@@ -28,12 +28,15 @@ module.exports = {
     },
     position: {
       type: 'integer'
+    },
+    labels: {
+      type: 'array'
     }
   },
 
   afterCreate: function(newOne, cb) {
     Card.count({list:newOne.list}).exec(function(err,count){
-      Card.update({id:newOne.id},{position:count-1}).exec(console.log);
+      Card.update({id:newOne.id},{position:count-1}).exec(function(){});
       cb();
     });
   }
