@@ -20,8 +20,10 @@
               <%});%>
             </select>
             <label for="labels">Labels:</label><div id="labels" style="width:100%;">
-              <button style="background-color: #0c8da0 !important;" class="btn btn-default label-picker" data-toggle="popover" data-placement="bottom">&nbsp;&nbsp;</button>
-              <button class="btn btn-default label-picker" data-toggle="popover" data-placement="bottom"><span class="glyphicon glyphicon-plus"></span></button>
+              <div class="btn-group" id="labels-picked">
+                <button type="button" style="background-color: #0c8da0 !important;" class="btn btn-default label-picker" data-toggle="popover" data-action="edit" data-placement="bottom">&nbsp;&nbsp;</button>
+              </div>
+              <button type="button" class="btn btn-default label-picker" data-toggle="popover" data-action="add" data-placement="bottom"><span class="glyphicon glyphicon-plus"></span></button>
             </div>
             <label for="description" style="width:100px">Description:</label><textarea name="description" placeholder="Description here..." class="form-control"></textarea>
             <input type="hidden" name="id"/>
@@ -104,6 +106,7 @@
           var card = res.card;
           var comments = res.comments;
           var form = editCardPanel.querySelector("form");
+          var pickedLabels = $('#labels-picked');
           editCardPanel.querySelector("#card-title").innerHTML = card.title;
           editCardPanel.querySelector("#add-comment").content.value = "";
           form.title.value = card.title;
@@ -120,6 +123,10 @@
           form.priority.value = card.priority || "none";
           form.description.value = card.description || "";
           form.id.value = card.id;
+          pickedLabels.empty();
+          res.card.labels ? res.card.labels.forEach(function(label){
+            pickedLabels.append(getLabelTemplate(label));
+          }): null;
           for(var i=0, l = comments.length; i < l; i++) {
             var comment = comments[i];
             commentsWrapper.appendChild(commentTemplate(comment));
@@ -135,17 +142,40 @@
 
   function onEditCardFormSubmit(e) {
     var form = e.target;
-    var span = document.querySelector("#card-"+form.id.value+" span");
+    var span = document.querySelector("#card-"+form.id.value+" span.card-title");
     var deadline = form.deadline.value === "" ? "" : (new Date(form.deadline.value)).toJSON();
+    var labels = [];
+    $('#labels-picked').children().each(function(index,label){
+      labels.push(($(label).data("label")));
+    });
     io.socket.post(
       '/card/edit/',
       {id:form.id.value, title:form.title.value,
         priority:form.priority.value,
         deadline: deadline,
-        description:form.description.value},
-      function(res,jres){
-        if(jres.statusCode === 200) {
-          span.innerHTML = res[0].title;
+        description:form.description.value,
+        labels: labels
+      },
+      function(res,jres) {
+        if (jres.statusCode === 200) {
+          var card = res[0];
+          $(span).parent().empty()
+            .append($('<div/>', {
+              class: 'card-labels clearfix'
+            }).each(function () {
+              var labelDiv = $(this);
+              card.labels.forEach(function (label) {
+                labelDiv.append($('<span/>', {
+                  css: {
+                    'background-color': label
+                  }
+                }));
+              });
+            })
+          ).append($('<span/>', {
+              html: card.title,
+              class: 'card-title'
+            }));
         }
       });
     editCardViewClose();
@@ -153,40 +183,95 @@
     return false;
   }
 
-  $(function(){
-    $(".label-picker").popover({html:true,
-      content:function(){
-        var other = $(".popover");
-        if(other.length > 0)
-          other.popover('hide');
-        var content = $('<div/>');
-        var li = ['#428bca','#5cb85c','#5bc0de','#f0ad4e','#d9534f'];
-        li.forEach(function(color){
-          content.append($('<a/>',{
-            class:"btn btn-lg btn-block",
-            css: {
-              'background-color': color,
-              'min-width': '200px'
-            },
-            html: '&nbsp;'
-          }))
-        });
-        return content;
+  var labelPickerObj = {html:true,
+    content:function(){
+      var elem = $(this);
+      var isEdit = elem.data("action") === "edit";
+      var other = $(".popover");
+      if(other.length > 0)
+        other.popover('hide');
+      var content = $('<div/>');
+      var li = ['#428bca','#5cb85c','#5bc0de','#f0ad4e','#d9534f'];
+      li.forEach(function(color){
+        content.append($('<a/>',{
+          class:"btn btn-lg btn-block",
+          css: {
+            'background-color': color,
+            'min-width': '200px'
+          },
+          html: "&nbsp;"
+        }).data("label",color).hover(function(){
+          if(!isEdit)
+            $(this).html("<span class='glyphicon glyphicon-plus'></span>");
+        },function(){
+          if(!isEdit)
+            $(this).html("&nbsp;");
+        }).click(function(){
+          var label = $(this);
+          if(isEdit) {
+            elem.css({
+              'background-color': label.data("label")
+            }).data({
+              'label': label.data("label")
+            });
+          }
+          else {elem.prev().append(getLabelTemplate(label.data("label")));
+          }
+          elem.popover('hide');
+        }))
+      });
+      if(isEdit) {
+        content.append($('<button/>',{
+          class: "btn btn-lg btn-block btn-danger",
+          css: {
+            'min-width': '200px'
+          },
+          html: "<span class='glyphicon glyphicon-trash'></span>",
+          type: 'button'
+        }).click(function(){
+          elem.popover('hide');
+          elem.remove();
+        }));
+      }
+      return content;
     },
     title: function(){
       var elem = $(this);
-      var text = elem.children().is(".glyphicon-plus") ? "Add label" : "Change label";
+      var text = elem.data("action") === "add" ? "Add label" : "Change label";
       var close = $('<button/>',{
         id: 'close-label-picker',
         class:"close pull-right",
-        html:'<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>'
+        html:'<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>',
+        type: 'button'
       }).click(function(){
         elem.popover('hide');
       });
       return  $('<div/>',{class:"clearfix"})
         .append($('<div/>',{html:text,css:{'display':'inline','line-height':'24px'}}))
         .append(close);
-    }});
+    }
+  }
+
+  $(function(){
+
+    $(".label-picker").popover(labelPickerObj);
   });
+
+  function getLabelTemplate(data){
+    return $('<button/>',{
+      css: {
+        'background-color': data
+      },
+      class: "btn btn-default label-picker",
+      data: {
+        'label': data,
+        'toggle': 'popover',
+        'action': 'edit',
+        'placement': 'bottom'
+      },
+      html: '&nbsp;&nbsp;',
+      type: 'button'
+    }).popover(labelPickerObj);
+  }
 
 </script>

@@ -10,7 +10,14 @@
         <ul id="list-<%= lists[i].id %>" class="sortable">
           <% var cards =  _.sortBy(lists[i].cards,'position'); %>
           <% _.each(cards,function(card) { %>
-            <li id="card-<%= card.id %>" onclick="editCardViewInit(this)" data-position="<%= card.position %>"><span><%= card.title %></span></li>
+            <li class="card" id="card-<%= card.id %>" onclick="editCardViewInit(this)" data-position="<%= card.position %>">
+              <div class="card-labels clearfix">
+                <% _.each(card.labels,function(label){ %>
+                  <span style="background-color:<%= label %>;"></span>
+                <% }) %>
+              </div>
+              <span class="card-title"><%= card.title %></span>
+            </li>
           <% }); %>
         </ul>
         <span class="add-card">Add Card</span>
@@ -84,6 +91,8 @@
           var span = form.parentElement;
           span.innerHTML = res.title;
           span.parentElement.id = "card-"+res.id;
+          span.parentElement.className = "card";
+          span.className = "card-title";
           span.parentElement.onclick = function(e){
             var element = e.target;
             if(element.id === undefined || element.id === "") element = element.parentElement;

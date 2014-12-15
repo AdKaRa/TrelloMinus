@@ -12,7 +12,8 @@ module.exports = {
     var priority = req.param("priority");
     var deadline = req.param("deadline");
 		var desc = req.param("description");
-		Card.update({id:id},{title:title,description:desc,priority:priority,deadline:deadline}).exec(function(err,updated){
+    var labels = req.param("labels");
+		Card.update({id:id},{title:title,description:desc,priority:priority,deadline:deadline,labels:labels}).exec(function(err,updated){
 			var result = {};
 			if(err) result = err;
 			else result = updated;
