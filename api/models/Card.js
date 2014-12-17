@@ -31,6 +31,10 @@ module.exports = {
     },
     labels: {
       type: 'array'
+    },
+    shared: {
+      collection: 'user',
+      via: 'cards'
     }
   },
 

@@ -29,5 +29,26 @@ module.exports = {
 					return res.json({card:card, comments:comments});
 				});
 		});
-	}
+	},
+  share_get: function(req,res) {
+    var card = req.param('card');
+    var organization = req.param('organization');
+    Card.findOne({id:card}).populate('shared').exec(function(err,shared){
+      Organization.findOne({id:organization}).populate('users').exec(function(err,scope){
+        var result = scope.users.map(function(user){
+          var assigned = _.findIndex(shared.shared,{id:user.id}) !== -1;
+          return {id:user.id,name:user.name,assigned:assigned};
+        });
+        res.json({share:result});
+      });
+    });
+  },
+  share_update: function(req,res) {
+    var card = req.param('card');
+    var organization = req.param('organization');
+    var share = req.param('share');
+    Card.update({id:card},{shared:share}).exec(function(err,card){
+      res.json(card);
+    });
+  }
 };

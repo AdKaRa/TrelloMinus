@@ -46,7 +46,9 @@ module.exports.routes = {
   },
   'get /b/:hash':'BoardController.main',
   'get /b/:hash/:title': 'BoardController.main',
-  'get /b/:hash/:title/stare': 'BoardController.stare'
+  'get /b/:hash/:title/stare': 'BoardController.stare',
+  'get /card/:card/share/:organization/get': 'CardController.share_get',
+  'post /card/:card/share/:organization/update': 'CardController.share_update'
 
   /***************************************************************************
   *                                                                          *

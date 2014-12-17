@@ -36,6 +36,10 @@ module.exports = {
       collection: 'board',
       via: 'starredBy',
       dominant: true
+    },
+    cards: {
+      collection: 'card',
+      via: 'shared'
     }
   },
 

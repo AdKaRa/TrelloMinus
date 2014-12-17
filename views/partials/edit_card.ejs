@@ -1,3 +1,5 @@
+<%- partial("./share_card.ejs") %>
+
 <div class="clearfix">
   <div class="col-lg-2"></div>
   <div class="col-lg-8">
@@ -9,27 +11,34 @@
         </div>
       </div>
       <div class="panel-body">
-        <form class="clearfix">
-          <div class="form-group">
-            <label for="title" style="width:100px">Title:</label><input type="text" name="title" class="form-control" placeholder="Title..."/>
-            <label for="deadline">Deadline:</label><input id="deadline" type="datetime" name="deadline" class="form-control" placeholder="MM/DD/YYYY HH:mm:ss" />
-            <label for="priority">Priority:</label>
-            <select id="priority" name="priority" class="form-control">
-              <% _.each(CardHelper.PRIORITIES, function(p) {%>
+        <div class="clearfix">
+          <form style="width:80%;margin-right:-1px;border-right: 1px solid #e3e3e3;padding-right: 10px;" class="clearfix pull-left">
+            <div class="form-group">
+              <label for="title" style="width:100px">Title:</label><input type="text" name="title" class="form-control" placeholder="Title..."/>
+              <label for="deadline">Deadline:</label><input id="deadline" type="datetime" name="deadline" class="form-control" placeholder="MM/DD/YYYY HH:mm:ss" />
+              <label for="priority">Priority:</label>
+              <select id="priority" name="priority" class="form-control">
+                <% _.each(CardHelper.PRIORITIES, function(p) {%>
                 <option value="<%= p %>"><%= p %></option>
-              <%});%>
-            </select>
-            <label for="labels">Labels:</label><div id="labels" style="width:100%;">
-              <div class="btn-group" id="labels-picked">
-                <button type="button" style="background-color: #0c8da0 !important;" class="btn btn-default label-picker" data-toggle="popover" data-action="edit" data-placement="bottom">&nbsp;&nbsp;</button>
+                <%});%>
+              </select>
+              <label for="labels">Labels:</label><div id="labels" style="width:100%;">
+                <div class="btn-group" id="labels-picked">
+                  <button type="button" style="background-color: #0c8da0 !important;" class="btn btn-default label-picker" data-toggle="popover" data-action="edit" data-placement="bottom">&nbsp;&nbsp;</button>
+                </div>
+                <button type="button" class="btn btn-default label-picker" data-toggle="popover" data-action="add" data-placement="bottom"><span class="glyphicon glyphicon-plus"></span></button>
               </div>
-              <button type="button" class="btn btn-default label-picker" data-toggle="popover" data-action="add" data-placement="bottom"><span class="glyphicon glyphicon-plus"></span></button>
+              <label for="description" style="width:100px">Description:</label><textarea name="description" placeholder="Description here..." class="form-control"></textarea>
+              <input type="hidden" name="id"/>
             </div>
-            <label for="description" style="width:100px">Description:</label><textarea name="description" placeholder="Description here..." class="form-control"></textarea>
-            <input type="hidden" name="id"/>
+            <input type="submit" class="btn btn-primary pull-right" value="Save"/>
+          </form>
+          <div style="width:18%;" class="pull-right">
+            <% if(board.type === "shared"){%>
+             <button type="button" id="share-card-button" class="btn btn-default" style="width:100%;">Share</button>
+            <%}%>
           </div>
-          <input type="submit" class="btn btn-primary pull-right" value="Save"/>
-        </form>
+        </div>
         <hr />
         <h3>Comments:</h3>
         <div id="comments-wrapper">Here gonna be comments</div>
@@ -273,5 +282,24 @@
       type: 'button'
     }).popover(labelPickerObj);
   }
-
+  <% if(board.type === "shared"){%>
+    $('#share-card-button').on('click',function(){
+      var card = editCardForm.id.value;
+      var organization =  '<%= board.organization.id %>';
+    io.socket.get('/card/'+card+'/share/'+organization+'/get',function(res,jres){
+      if(jres.statusCode === 200) {
+        //fill the modal
+        var list = $('<ul/>',{class:'list-group'});
+        res.share.forEach(function(assignee){
+          var li = $('<li/>',{class:'list-group-item',html:assignee.name,data:{'id':assignee.id}});
+          if(assignee.assigned)
+            li.addClass('ui-selected');
+          list.append(li);
+        });
+        list.appendTo($('#share-card .modal-body').empty()).selectable();
+        $('#share-card').modal();
+      }
+    });
+  });
+  <%}%>
 </script>

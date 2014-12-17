@@ -116,3 +116,8 @@
   margin: 0;
   float: left;
 }
+
+.ui-selected {
+  color:white;
+  background-color: #428bca;
+}
