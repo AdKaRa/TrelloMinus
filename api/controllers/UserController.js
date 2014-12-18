@@ -108,8 +108,12 @@ module.exports = {
     }
   },
   cards : function(req,res){
-    Card.find({shared:req.session.user}).populateAll().exec(function(err,cards){
-      return res.view('cards',{user:req.session.user, cards:cards});
+    User.findOne({id:req.session.user.id}).populate('cards').then(function(user){
+      return user.cards;
+    }).then(function(ucards){
+      Card.find({id: _.pluck(ucards,'id')}).populate('list').then(function(cards){
+        return res.view('cards',{user:req.session.user,cards:cards});
+      });
     });
   }
 };

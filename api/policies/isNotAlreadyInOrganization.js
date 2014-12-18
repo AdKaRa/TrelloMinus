@@ -1,7 +1,7 @@
 module.exports = function(req,res,next) {
   var recipient = req.body.recipient;
   var to = req.param("organization");
-  if(_.where(recipient.organizations,{id: _.parseInt(to)}) === 0) {
+  if(_.findIndex(recipient.organizations,{id: _.parseInt(to)}) === -1) {
     return next();
   }
   res.status(400);
