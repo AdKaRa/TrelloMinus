@@ -19,11 +19,11 @@ a [Sails](http://sailsjs.org) application
 * ~~Gwiazdkowanie tablic~~
 * ~~Możliwość komentowania zadań~~
 * ~~Dodawanie organizacji~~ ~~(only -,o)~~
-* Łączenie zadań z użytkowanikami
+* ~~Łączenie zadań z użytkowanikami~~
 * ~~Punktowanie zadań~~ (note: aka setting priority)
 * ~~Określenie deadline~~
 * ~~Zmiana kolejności zadań (also delayed til d&d)~~
-* Dodawanie labeli do zadań
+* ~~Dodawanie labeli do zadań~~
 
 
 ##Notes:

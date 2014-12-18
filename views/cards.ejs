@@ -1,0 +1,7 @@
+<h3>Assigned cards:</h3>
+
+<ul class="list-group">
+  <% _.each(cards,function(card){ %>
+    <li class="list-group-item"><%= card.title %> from list <strong><%= card.list.name %></strong></li>
+  <% }) %>
+</ul>

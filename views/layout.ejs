@@ -26,6 +26,15 @@
                 <a href="/user/<%= req.session.user.name %>" class="btn btn-default"><%= req.session.user.name %></a>
                 <div class="btn-group">
                   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Actions</span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="/user/<%=user.name%>/cards"><span class="glyphicon glyphicon glyphicon-tasks"></span> Assigned cards</a></li>
+                  </ul>
+                </div>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                     Organizations
                     <span class="caret"></span>
                   </button>

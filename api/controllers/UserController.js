@@ -101,11 +101,15 @@ module.exports = {
       User.create({name:req_username,password:req_password,email:req_email}).exec(function(err,user){
         if(err || !user) {
           res.status(400);
-          //TODO: Specify which attribute has been violated
           return res.json({message:'User has not been created. An error with data occurred.'});
         }
         return res.json({message:'User has been created',redirect:'/'});
       });
     }
+  },
+  cards : function(req,res){
+    Card.find({shared:req.session.user}).populateAll().exec(function(err,cards){
+      return res.view('cards',{user:req.session.user, cards:cards});
+    });
   }
 };
